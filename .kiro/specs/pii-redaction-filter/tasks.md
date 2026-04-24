@@ -40,7 +40,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random valid file paths of all four styles (Unix absolute, Unix home-relative, Windows drive, Windows UNC) with valid path characters (letters, digits, dots, hyphens, underscores, spaces) embedded in arbitrary surrounding text, assert scanner detects them with type FILE_PATH and correct positions
     - **Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5, 10.8**
 
-  - [~] 2.5 Write property test: No False Positives on Non-Path Patterns
+  - [x] 2.5 Write property test: No False Positives on Non-Path Patterns
     - **Property 14: No False Positives on Non-Path Patterns**
     - Generate single forward slashes, lone tildes, URL patterns (https://example.com/path), and plain words, assert scanner returns no FILE_PATH entities
     - **Validates: Requirements 10.6**
