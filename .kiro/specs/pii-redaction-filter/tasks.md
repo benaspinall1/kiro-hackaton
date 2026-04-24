@@ -35,7 +35,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random alphanumeric/word strings that avoid PII patterns, assert scanner returns empty list
     - **Validates: Requirements 1.4**
 
-  - [~] 2.4 Write property test: File System Path Detection Accuracy
+  - [x] 2.4 Write property test: File System Path Detection Accuracy
     - **Property 13: File System Path Detection Accuracy**
     - Generate random valid file paths of all four styles (Unix absolute, Unix home-relative, Windows drive, Windows UNC) with valid path characters (letters, digits, dots, hyphens, underscores, spaces) embedded in arbitrary surrounding text, assert scanner detects them with type FILE_PATH and correct positions
     - **Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5, 10.8**
