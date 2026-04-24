@@ -102,7 +102,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Implement Notification_Service
-  - [~] 6.1 Implement the Notification_Service module
+  - [x] 6.1 Implement the Notification_Service module
     - Create `src/notification-service.ts` implementing the `NotificationService` interface
     - `createRedactionNotification`: produce a notification of type `'redaction'` with per-type counts from the redaction actions list
     - `createBlockNotification`: produce a notification of type `'block'` listing the blocked PII types and reason
