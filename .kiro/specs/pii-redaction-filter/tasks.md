@@ -25,7 +25,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Handle internal regex errors by logging and returning an empty entity list
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 8.1, 8.2, 8.3, 8.4, 8.5, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8_
 
-  - [ ]* 2.2 Write property test: PII Detection Accuracy
+  - [x] 2.2 Write property test: PII Detection Accuracy
     - **Property 1: PII Detection Accuracy**
     - Generate random valid PII values per type (including file paths of all four styles) embedded in random surrounding text, assert scanner detects them with correct type and positions
     - **Validates: Requirements 1.2, 1.3, 8.1, 8.2, 8.3, 8.4, 10.1, 10.2, 10.3, 10.4**
