@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, it, expect, vi } from 'vitest';
 import { ChatProxyImpl, DownstreamService } from './chat-proxy';
 import { PrivacyRuleConfig } from './types';
@@ -149,6 +150,17 @@ describe('ChatProxyImpl', () => {
     expect(report.messageHash).toMatch(/^[a-f0-9]{64}$/);
     expect(() => new Date(report.timestamp)).not.toThrow();
     expect(new Date(report.timestamp).toISOString()).toBe(report.timestamp);
+  });
+
+  it('messageHash is SHA-256 of original message, not redacted text', async () => {
+    const downstream = makeDownstream('ok');
+    const proxy = new ChatProxyImpl(downstream);
+    const originalPrompt = 'Contact me at test@example.com please';
+    const expectedHash = createHash('sha256').update(originalPrompt).digest('hex');
+
+    const result = await proxy.processRequest({ prompt: originalPrompt }, emptyRules);
+
+    expect(result.redactionReport.messageHash).toBe(expectedHash);
   });
 
   it('generates report with correct detected counts for multiple PII types', async () => {
