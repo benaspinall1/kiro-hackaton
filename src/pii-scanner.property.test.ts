@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { scan } from './pii-scanner';
+import { redact } from './redaction-engine';
 import { PIIType, PIIEntity } from './types';
 
 /**
@@ -495,6 +496,60 @@ describe('Feature: pii-redaction-filter, Property 14: No False Positives on Non-
         const filePathEntities = entities.filter((e) => e.type === 'FILE_PATH');
         expect(filePathEntities).toEqual([]);
       }),
+      { numRuns: 100 }
+    );
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Property 15: File Path Redaction Round-Trip
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 15: File Path Redaction Round-Trip
+ *
+ * For any valid input text containing file system paths, scanning for PII,
+ * redacting all detected entities (including file paths with [FILE_PATH_REDACTED]),
+ * and then scanning the redacted output again SHALL yield zero PII entities of
+ * type FILE_PATH. This ensures that the [FILE_PATH_REDACTED] placeholder is not
+ * itself flagged as a file path.
+ *
+ * Validates: Requirements 10.7, 2.5
+ */
+
+describe('Feature: pii-redaction-filter, Property 15: File Path Redaction Round-Trip', () => {
+  it('scan → redact → scan yields zero FILE_PATH entities for all path styles', () => {
+    fc.assert(
+      fc.property(
+        fc.oneof(
+          unixAbsolutePathGen,
+          unixHomePathGen,
+          windowsDrivePathGen,
+          windowsUNCPathGen
+        ),
+        safeText,
+        safeText,
+        (pathObj, before, after) => {
+          const prefix = before.length > 0 ? before + ' ' : '';
+          const suffix = after.length > 0 ? ' ' + after : '';
+          const text = prefix + pathObj.value + suffix;
+
+          // First scan
+          const entities = scan(text);
+
+          // Redact all detected entities
+          const { redactedText } = redact(text, entities);
+
+          // Second scan on redacted output
+          const secondScanEntities = scan(redactedText);
+          const filePathEntities = secondScanEntities.filter(
+            (e) => e.type === 'FILE_PATH'
+          );
+
+          expect(filePathEntities).toEqual([]);
+        }
+      ),
       { numRuns: 100 }
     );
   });
