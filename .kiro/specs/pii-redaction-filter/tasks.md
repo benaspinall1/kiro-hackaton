@@ -13,8 +13,8 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
   - Create custom error classes: `InvalidEntityError`, `PDFCorruptedError`, `PDFPasswordProtectedError`, `PDFPageLimitError`, `PDFTimeoutError`
   - _Requirements: 2.2, 7.1, 9.6, 10.7_
 
-- [ ] 2. Implement PII_Scanner
-  - [ ] 2.1 Implement the PII_Scanner module
+- [-] 2. Implement PII_Scanner
+  - [x] 2.1 Implement the PII_Scanner module
     - Create `src/pii-scanner.ts` implementing the `PIIScanner` interface
     - Implement regex patterns for each PII type: email (RFC 5322 simplified), US phone numbers ((XXX) XXX-XXXX, XXX-XXX-XXXX, +1XXXXXXXXXX), SSN (XXX-XX-XXXX and XXXXXXXXX), credit card (13-19 digits with optional spaces/dashes), addresses, and file system paths
     - Implement file path regex patterns for: Unix absolute paths (`/dir/file`), Unix home-relative paths (`~/dir/file`), Windows drive paths (`C:\dir\file`), and Windows UNC paths (`\\server\share\folder`)

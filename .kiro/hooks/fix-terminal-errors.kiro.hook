@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Fix Terminal Errors",
+  "description": "Automatically analyzes and fixes code when a shell command returns an error result.",
+  "version": "1",
+  "when": {
+    "type": "postToolUse",
+    "toolTypes": [
+      "shell"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The shell command just finished. If the result contains an error, analyze the error output and fix the relevant code to resolve the issue. If there is no error, do nothing."
+  }
+}
