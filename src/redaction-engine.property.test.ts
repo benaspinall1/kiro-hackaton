@@ -179,3 +179,88 @@ describe('Feature: pii-redaction-filter, Property 3: Correct Redaction with Type
     );
   });
 });
+
+
+/**
+ * Feature: pii-redaction-filter, Property 4: Non-PII Text Preservation
+ *
+ * For any text and set of detected PII entities, after redaction, all characters
+ * in the original text that were not part of any PII entity span SHALL remain
+ * unchanged in the redacted output at their corresponding positions.
+ *
+ * Validates: Requirements 2.3
+ */
+describe('Feature: pii-redaction-filter, Property 4: Non-PII Text Preservation', () => {
+  it('all non-PII segments remain unchanged after redaction', () => {
+    fc.assert(
+      fc.property(
+        fc.array(piiGen, { minLength: 1, maxLength: 5 }),
+        fc.array(safeSeparator, { minLength: 6, maxLength: 10 }),
+        (piiItems, separators) => {
+          // Build text with PII items separated by safe text on separate lines
+          const parts: string[] = [];
+          for (let i = 0; i < piiItems.length; i++) {
+            const sep = separators[i] || 'lorem';
+            parts.push(sep + ' ' + piiItems[i].value);
+          }
+          parts.push(separators[piiItems.length] || 'ipsum');
+          const text = parts.join('\n');
+
+          // Scan and redact
+          const entities = scan(text);
+          const { redactedText } = redact(text, entities);
+
+          // Build sorted, non-overlapping entity spans
+          const spans = entities
+            .map((e) => ({ start: e.startIndex, end: e.endIndex }))
+            .sort((a, b) => a.start - b.start);
+
+          // Extract non-PII segments from the original text
+          const nonPiiSegments: string[] = [];
+          let cursor = 0;
+          for (const span of spans) {
+            if (span.start > cursor) {
+              nonPiiSegments.push(text.substring(cursor, span.start));
+            }
+            cursor = Math.max(cursor, span.end);
+          }
+          if (cursor < text.length) {
+            nonPiiSegments.push(text.substring(cursor));
+          }
+
+          // Each non-PII segment must appear in the redacted text in order
+          let searchFrom = 0;
+          for (const segment of nonPiiSegments) {
+            const idx = redactedText.indexOf(segment, searchFrom);
+            expect(idx).toBeGreaterThanOrEqual(searchFrom);
+            searchFrom = idx + segment.length;
+          }
+
+          // Additionally verify: concatenating non-PII segments from the
+          // redacted output (stripping all placeholders) matches the original
+          // non-PII content
+          let stripped = redactedText;
+          const allTypes: PIIType[] = ['EMAIL', 'PHONE', 'SSN', 'CREDIT_CARD', 'ADDRESS', 'FILE_PATH'];
+          for (const piiType of allTypes) {
+            const placeholder = PLACEHOLDER_MAP[piiType];
+            while (stripped.includes(placeholder)) {
+              stripped = stripped.replace(placeholder, '');
+            }
+          }
+
+          let originalNonPii = text;
+          // Remove PII spans from original (reverse order to preserve indices)
+          const reversedSpans = [...spans].sort((a, b) => b.start - a.start);
+          for (const span of reversedSpans) {
+            originalNonPii =
+              originalNonPii.substring(0, span.start) +
+              originalNonPii.substring(span.end);
+          }
+
+          expect(stripped).toBe(originalNonPii);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
