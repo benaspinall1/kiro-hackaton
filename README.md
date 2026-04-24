@@ -1,1 +1,1 @@
-# kiro-hackaton
+# kiro-hackathon

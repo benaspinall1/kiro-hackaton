@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Auto Update Docs on Source Change",
+  "description": "When source files (TypeScript, JSON configs, or environment files) are edited, the agent reviews the changes and updates the README.md or docs folder to keep documentation in sync with the code.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.ts",
+      "*.tsx",
+      "*.json",
+      "*.env",
+      "tsconfig.json",
+      "package.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A source file was just edited. Review the change and determine if the README.md (or files in a /docs folder, if one exists) needs to be updated to reflect the change. If documentation updates are needed, make the edits to keep docs accurate and in sync with the code. Focus on meaningful changes — API signatures, new features, configuration changes, architectural updates — and skip trivial edits like formatting or comments."
+  },
+  "workspaceFolderName": "kiro",
+  "shortName": "auto-update-docs"
+}
