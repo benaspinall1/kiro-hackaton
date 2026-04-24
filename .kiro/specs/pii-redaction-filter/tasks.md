@@ -45,7 +45,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate single forward slashes, lone tildes, URL patterns (https://example.com/path), and plain words, assert scanner returns no FILE_PATH entities
     - **Validates: Requirements 10.6**
 
-  - [~] 2.6 Write property test: File Path Redaction Round-Trip
+  - [x] 2.6 Write property test: File Path Redaction Round-Trip
     - **Property 15: File Path Redaction Round-Trip**
     - Generate text with file paths of all styles, scan → redact → scan again, assert zero FILE_PATH entities on second scan
     - **Validates: Requirements 10.7, 2.5**
