@@ -419,3 +419,83 @@ describe('Feature: pii-redaction-filter, Property 13: File System Path Detection
     );
   });
 });
+
+
+// ---------------------------------------------------------------------------
+// Property 14: No False Positives on Non-Path Patterns
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 14: No False Positives on Non-Path Patterns
+ *
+ * For any text containing single forward slashes, lone tildes, URL patterns
+ * (e.g., https://example.com/path), or plain words without path separators,
+ * the PII_Scanner SHALL not return any PII_Entity with type FILE_PATH.
+ *
+ * Validates: Requirements 10.6
+ */
+
+// ---------------------------------------------------------------------------
+// Generators for non-path patterns
+// ---------------------------------------------------------------------------
+
+/** Single forward slash */
+const singleSlashGen = fc.constant('/');
+
+/** Lone tilde */
+const loneTildeGen = fc.constant('~');
+
+/** URL pattern generator: protocol://domain.tld/path */
+const urlProtocol = fc.constantFrom('https', 'http', 'ftp');
+const urlDomainWord = fc.string({
+  minLength: 2,
+  maxLength: 10,
+  unit: fc.constantFrom(...lowerAlpha.split('')),
+});
+const urlTld = fc.constantFrom('com', 'org', 'net', 'io', 'dev', 'edu');
+const urlPathSegment = fc.string({
+  minLength: 1,
+  maxLength: 8,
+  unit: fc.constantFrom(...'abcdefghijklmnopqrstuvwxyz0123456789-_'.split('')),
+});
+
+const urlGen = fc
+  .tuple(
+    urlProtocol,
+    urlDomainWord,
+    urlTld,
+    fc.array(urlPathSegment, { minLength: 1, maxLength: 3 })
+  )
+  .map(([proto, domain, tld, segments]) =>
+    `${proto}://${domain}.${tld}/${segments.join('/')}`
+  );
+
+/** Plain word generator: alphabetic words with no path separators */
+const plainWordGen = fc.string({
+  minLength: 1,
+  maxLength: 15,
+  unit: fc.constantFrom(
+    ...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+  ),
+});
+
+/** Combined non-path pattern generator */
+const nonPathPatternGen = fc.oneof(
+  singleSlashGen,
+  loneTildeGen,
+  urlGen,
+  plainWordGen
+);
+
+describe('Feature: pii-redaction-filter, Property 14: No False Positives on Non-Path Patterns', () => {
+  it('returns no FILE_PATH entities for single slashes, lone tildes, URLs, and plain words', () => {
+    fc.assert(
+      fc.property(nonPathPatternGen, (input: string) => {
+        const entities = scan(input);
+        const filePathEntities = entities.filter((e) => e.type === 'FILE_PATH');
+        expect(filePathEntities).toEqual([]);
+      }),
+      { numRuns: 100 }
+    );
+  });
+});
