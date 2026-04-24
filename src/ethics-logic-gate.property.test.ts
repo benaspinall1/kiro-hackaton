@@ -114,3 +114,98 @@ describe('Feature: pii-redaction-filter, Property 6: Block Rule Enforcement', ()
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// Property 7: Redact-Only Rules Allow Message
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 7: Redact-Only Rules Allow Message
+ *
+ * For any set of detected PII entities and any Privacy_Rule configuration
+ * (including empty configurations) where no detected entity's type is mapped
+ * to "block" (missing types default to "redact"), the Ethics_Logic_Gate SHALL
+ * return `allowed: true`.
+ *
+ * Validates: Requirements 3.4, 3.5, 7.2
+ */
+
+/**
+ * Generate a list of PIIEntity objects (0+) and a PrivacyRuleConfig where
+ * NO entity's type is mapped to "block". Types are either explicitly set to
+ * "redact" or omitted from the config entirely (which defaults to "redact").
+ *
+ * Strategy:
+ * 1. Pick a random subset of PII types to appear as entities (0-6 types).
+ * 2. For each chosen type, generate 1-3 entities.
+ * 3. For each type, randomly decide: explicitly set to "redact" or omit from config.
+ * 4. Optionally add extra "redact" rules for types NOT present in entities.
+ */
+const entitiesWithRedactOnlyRuleArb = fc
+  .record({
+    /** Subset of PII types to use as entity types */
+    entityTypes: fc.shuffledSubarray(ALL_PII_TYPES, { minLength: 0 }),
+    /** How many entities per chosen type (1-3 each) */
+    countsPerType: fc.array(fc.integer({ min: 1, max: 3 }), { minLength: 6, maxLength: 6 }),
+    /** For each entity type, whether to explicitly include it in config as "redact" (true) or omit (false) */
+    includeInConfig: fc.array(fc.boolean(), { minLength: 6, maxLength: 6 }),
+    /** Extra PII types to add as explicit "redact" rules (types not used as entities) */
+    extraRedactTypes: fc.shuffledSubarray(ALL_PII_TYPES, { minLength: 0 }),
+  })
+  .map(({ entityTypes, countsPerType, includeInConfig, extraRedactTypes }) => {
+    // Build entities
+    const entities: PIIEntity[] = [];
+    for (let i = 0; i < entityTypes.length; i++) {
+      const count = countsPerType[i % countsPerType.length];
+      for (let j = 0; j < count; j++) {
+        const start = entities.length * 20;
+        entities.push({
+          type: entityTypes[i],
+          matchedText: `dummy-${entityTypes[i]}-${j}`,
+          startIndex: start,
+          endIndex: start + 10,
+        });
+      }
+    }
+
+    // Build rules: only "redact" or omitted — never "block"
+    const rules: Partial<Record<PIIType, 'block' | 'redact'>> = {};
+    for (let i = 0; i < entityTypes.length; i++) {
+      if (includeInConfig[i % includeInConfig.length]) {
+        rules[entityTypes[i]] = 'redact';
+      }
+      // else: omitted from config, defaults to "redact"
+    }
+
+    // Add extra "redact" rules for types not in entity set
+    const entityTypeSet = new Set(entityTypes);
+    for (const t of extraRedactTypes) {
+      if (!entityTypeSet.has(t)) {
+        rules[t] = 'redact';
+      }
+    }
+
+    const config: PrivacyRuleConfig = { rules };
+
+    return { entities, config };
+  });
+
+describe('Feature: pii-redaction-filter, Property 7: Redact-Only Rules Allow Message', () => {
+  it('gate returns allowed: true with empty blockedTypes and null reason when no block rules match', () => {
+    fc.assert(
+      fc.property(entitiesWithRedactOnlyRuleArb, ({ entities, config }) => {
+        const result = evaluate(entities, config);
+
+        // Must be allowed
+        expect(result.allowed).toBe(true);
+
+        // blockedTypes must be empty
+        expect(result.blockedTypes).toEqual([]);
+
+        // reason must be null
+        expect(result.reason).toBeNull();
+      }),
+      { numRuns: 100 }
+    );
+  });
+});
