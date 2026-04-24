@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Run Tests on Save",
+  "description": "Automatically runs the test suite whenever a .ts file in src/ is saved, catching regressions immediately — especially useful since a broken regex in pii-scanner.ts or a bad placeholder in redaction-engine.ts could leak PII.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npm test"
+  }
+}

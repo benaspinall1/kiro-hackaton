@@ -59,7 +59,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Preserve all non-PII text unchanged
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-  - [~] 3.2 Write property test: Correct Redaction with Type-Specific Placeholders
+  - [x] 3.2 Write property test: Correct Redaction with Type-Specific Placeholders
     - **Property 3: Correct Redaction with Type-Specific Placeholders**
     - Generate text with 1-5 embedded PII entities of mixed types, verify placeholder counts match entity counts per type
     - **Validates: Requirements 2.1, 2.2, 2.4**

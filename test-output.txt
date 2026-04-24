@@ -1,0 +1,51 @@
+
+ RUN  v4.1.5 /home/aspraxis/code/college/hackathon/kiro
+
+ ❯ src/redaction-engine.property.test.ts (1 test | 1 failed) 33ms
+     × placeholder counts in redacted text match entity counts per type 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/redaction-engine.property.test.ts > Feature: pii-redaction-filter, Property 3: Correct Redaction with Type-Specific Placeholders > placeholder counts in redacted text match entity counts per type
+Error: Property failed after 11 tests
+{ seed: 2010273457, path: "10:1:0:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:3:0:1:1:1:4:4:9:9:9:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8:8", endOnFailure: true }
+Counterexample: [[{"type":"CREDIT_CARD","value":"0000000000000000"}],["aa","astaa","aa","aa","aa","aa","aa","aa"]]
+Shrunk 58 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+ ❯ buildError node_modules/fast-check/lib/fast-check.js:2434:16
+ ❯ throwIfFailed node_modules/fast-check/lib/fast-check.js:2441:8
+ ❯ reportRunDetails node_modules/fast-check/lib/fast-check.js:2457:14
+ ❯ Proxy.assert node_modules/fast-check/lib/fast-check.js:2514:7
+ ❯ src/redaction-engine.property.test.ts:128:8
+    126| describe('Feature: pii-redaction-filter, Property 3: Correct Redaction…
+    127|   it('placeholder counts in redacted text match entity counts per type…
+    128|     fc.assert(
+       |        ^
+    129|       fc.property(
+    130|         // Generate 1-5 PII values with safe separators between them
+
+Caused by: AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/redaction-engine.property.test.ts:163:38
+ ❯ Property.predicate node_modules/fast-check/lib/fast-check.js:1329:99
+ ❯ Property.run node_modules/fast-check/lib/fast-check.js:1298:24
+ ❯ runIt node_modules/fast-check/lib/fast-check.js:2477:24
+ ❯ check node_modules/fast-check/lib/fast-check.js:2509:204
+ ❯ Proxy.assert node_modules/fast-check/lib/fast-check.js:2512:14
+ ❯ src/redaction-engine.property.test.ts:128:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  16:16:36
+   Duration  197ms (transform 39ms, setup 0ms, import 64ms, tests 33ms, environment 0ms)
+
