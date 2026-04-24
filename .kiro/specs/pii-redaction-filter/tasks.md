@@ -83,7 +83,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Validate privacy rule config at startup: reject configs referencing unsupported PII types
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 7.1, 7.2, 7.3_
 
-  - [~] 4.2 Write property test: Block Rule Enforcement
+  - [x] 4.2 Write property test: Block Rule Enforcement
     - **Property 6: Block Rule Enforcement**
     - Generate random PII entity lists + rule configs with ≥1 "block" rule, verify gate returns `allowed: false` with correct `blockedTypes`
     - **Validates: Requirements 3.2, 3.3**
