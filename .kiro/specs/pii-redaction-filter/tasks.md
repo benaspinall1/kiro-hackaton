@@ -30,22 +30,22 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random valid PII values per type (including file paths of all four styles) embedded in random surrounding text, assert scanner detects them with correct type and positions
     - **Validates: Requirements 1.2, 1.3, 8.1, 8.2, 8.3, 8.4, 10.1, 10.2, 10.3, 10.4**
 
-  - [ ]* 2.3 Write property test: No False Positives on Clean Text
+  - [x] 2.3 Write property test: No False Positives on Clean Text
     - **Property 2: No False Positives on Clean Text**
     - Generate random alphanumeric/word strings that avoid PII patterns, assert scanner returns empty list
     - **Validates: Requirements 1.4**
 
-  - [ ]* 2.4 Write property test: File System Path Detection Accuracy
+  - [~] 2.4 Write property test: File System Path Detection Accuracy
     - **Property 13: File System Path Detection Accuracy**
     - Generate random valid file paths of all four styles (Unix absolute, Unix home-relative, Windows drive, Windows UNC) with valid path characters (letters, digits, dots, hyphens, underscores, spaces) embedded in arbitrary surrounding text, assert scanner detects them with type FILE_PATH and correct positions
     - **Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5, 10.8**
 
-  - [ ]* 2.5 Write property test: No False Positives on Non-Path Patterns
+  - [~] 2.5 Write property test: No False Positives on Non-Path Patterns
     - **Property 14: No False Positives on Non-Path Patterns**
     - Generate single forward slashes, lone tildes, URL patterns (https://example.com/path), and plain words, assert scanner returns no FILE_PATH entities
     - **Validates: Requirements 10.6**
 
-  - [ ]* 2.6 Write property test: File Path Redaction Round-Trip
+  - [~] 2.6 Write property test: File Path Redaction Round-Trip
     - **Property 15: File Path Redaction Round-Trip**
     - Generate text with file paths of all styles, scan → redact → scan again, assert zero FILE_PATH entities on second scan
     - **Validates: Requirements 10.7, 2.5**
@@ -59,17 +59,17 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Preserve all non-PII text unchanged
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-  - [ ]* 3.2 Write property test: Correct Redaction with Type-Specific Placeholders
+  - [~] 3.2 Write property test: Correct Redaction with Type-Specific Placeholders
     - **Property 3: Correct Redaction with Type-Specific Placeholders**
     - Generate text with 1-5 embedded PII entities of mixed types, verify placeholder counts match entity counts per type
     - **Validates: Requirements 2.1, 2.2, 2.4**
 
-  - [ ]* 3.3 Write property test: Non-PII Text Preservation
+  - [~] 3.3 Write property test: Non-PII Text Preservation
     - **Property 4: Non-PII Text Preservation**
     - Generate text with known PII positions, verify all non-PII segments remain unchanged after redaction
     - **Validates: Requirements 2.3**
 
-  - [ ]* 3.4 Write property test: Redaction Round-Trip
+  - [~] 3.4 Write property test: Redaction Round-Trip
     - **Property 5: Redaction Round-Trip**
     - Generate arbitrary text with PII, scan → redact → scan again, assert zero entities on second scan
     - **Validates: Requirements 2.5, 8.5**
@@ -83,17 +83,17 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Validate privacy rule config at startup: reject configs referencing unsupported PII types
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 7.1, 7.2, 7.3_
 
-  - [ ]* 4.2 Write property test: Block Rule Enforcement
+  - [~] 4.2 Write property test: Block Rule Enforcement
     - **Property 6: Block Rule Enforcement**
     - Generate random PII entity lists + rule configs with ≥1 "block" rule, verify gate returns `allowed: false` with correct `blockedTypes`
     - **Validates: Requirements 3.2, 3.3**
 
-  - [ ]* 4.3 Write property test: Redact-Only Rules Allow Message
+  - [~] 4.3 Write property test: Redact-Only Rules Allow Message
     - **Property 7: Redact-Only Rules Allow Message**
     - Generate random PII entity lists + rule configs with all "redact" or empty config, verify gate returns `allowed: true`
     - **Validates: Requirements 3.4, 3.5, 7.2**
 
-  - [ ]* 4.4 Write property test: Privacy Rule Configuration Validation
+  - [~] 4.4 Write property test: Privacy Rule Configuration Validation
     - **Property 12: Privacy Rule Configuration Validation**
     - Generate configs with valid and invalid PII type keys, verify accept/reject behavior
     - **Validates: Requirements 7.1, 7.3**
@@ -109,17 +109,17 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Return `null` when no PII entities are detected (no notification generated)
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-  - [ ]* 6.2 Write property test: Redaction Notification Correctness
+  - [~] 6.2 Write property test: Redaction Notification Correctness
     - **Property 8: Redaction Notification Correctness**
     - Generate random non-empty RedactionAction lists, verify notification type is `'redaction'` and `details` counts are correct
     - **Validates: Requirements 4.1**
 
-  - [ ]* 6.3 Write property test: Block Notification Correctness
+  - [~] 6.3 Write property test: Block Notification Correctness
     - **Property 9: Block Notification Correctness**
     - Generate random GateResult with `allowed: false`, verify notification type is `'block'` and lists exactly the blocked types
     - **Validates: Requirements 4.2**
 
-  - [ ]* 6.4 Write property test: No Notification for Clean Messages
+  - [~] 6.4 Write property test: No Notification for Clean Messages
     - **Property 10: No Notification for Clean Messages**
     - Generate non-PII text, process through pipeline, verify null notification
     - **Validates: Requirements 4.4**
@@ -133,7 +133,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Wrap extraction in a 3-second timeout; throw `PDFTimeoutError` if exceeded
     - _Requirements: 9.1, 9.2, 9.3, 9.6, 9.7_
 
-  - [ ]* 7.2 Write unit tests for PDF_Text_Extractor
+  - [~] 7.2 Write unit tests for PDF_Text_Extractor
     - Test corrupted PDF → `PDFCorruptedError`
     - Test password-protected PDF → `PDFPasswordProtectedError`
     - Test image-only PDF → `extractable: false`, empty text
@@ -160,12 +160,12 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Combine text prompt and PDF scan results into a single report when both are present
     - _Requirements: 6.1, 6.2, 6.3, 9.3, 9.8_
 
-  - [ ]* 8.3 Write property test: Redaction Report Structure
+  - [~] 8.3 Write property test: Redaction Report Structure
     - **Property 11: Redaction Report Structure**
     - Generate random messages, process through pipeline, verify `messageHash` is valid SHA-256 hex, `detectedCounts` match actual counts, `actions` match actions taken, and `timestamp` is valid ISO 8601
     - **Validates: Requirements 6.1**
 
-  - [ ]* 8.4 Write unit tests for Chat_Proxy error handling
+  - [~] 8.4 Write unit tests for Chat_Proxy error handling
     - Test Ethics_Logic_Gate internal error → message blocked
     - Test downstream service unavailable → error response, no retry
     - Test no PII detected → report with zero counts and `'none'` action
@@ -180,7 +180,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Ensure the full pipeline is functional: request → PDF extraction → scan → redact → gate → notify → respond
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 9.4, 9.5_
 
-  - [ ]* 10.2 Write integration tests
+  - [~] 10.2 Write integration tests
     - Test pipeline ordering: Scanner → Redaction_Engine → Ethics_Logic_Gate
     - Test PDF extraction runs before scanning when PDF is attached
     - Test blocked message does not contact downstream service

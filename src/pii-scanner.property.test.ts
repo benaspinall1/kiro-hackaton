@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { scan } from './pii-scanner';
-import { PIIType } from './types';
+import { PIIType, PIIEntity } from './types';
 
 /**
  * Feature: pii-redaction-filter, Property 1: PII Detection Accuracy
@@ -227,6 +227,62 @@ describe('Feature: pii-redaction-filter, Property 1: PII Detection Accuracy', ()
           expect(found).toBe(true);
         }
       ),
+      { numRuns: 100 }
+    );
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Property 2: No False Positives on Clean Text
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 2: No False Positives on Clean Text
+ *
+ * For any text string that contains no valid PII patterns (no email addresses,
+ * phone numbers, SSNs, credit card numbers, addresses, or file system paths),
+ * the PII_Scanner SHALL return an empty list of PII entities.
+ *
+ * Validates: Requirements 1.4
+ */
+
+// ---------------------------------------------------------------------------
+// Generators for clean (non-PII) text
+// ---------------------------------------------------------------------------
+
+/**
+ * Safe alphabet: lowercase + uppercase letters only.
+ * Avoids digits (which could form SSNs, phones, credit cards, addresses)
+ * and special characters (which could form emails, paths).
+ */
+const alphaChar = fc.constantFrom(
+  ...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+);
+
+/**
+ * A clean word: 1-12 purely alphabetic characters.
+ * No digits, no '@', no '/', no '\', no '~', no '-', no '.', no '(' or ')'.
+ * This ensures no substring can accidentally match email, phone, SSN,
+ * credit card, address, or file path patterns.
+ */
+const cleanWord = fc.string({ minLength: 1, maxLength: 12, unit: alphaChar });
+
+/**
+ * Clean text: space-separated clean words forming a sentence-like string.
+ * Between 1 and 20 words to give reasonable variety.
+ */
+const cleanText = fc
+  .array(cleanWord, { minLength: 1, maxLength: 20 })
+  .map((words) => words.join(' '));
+
+describe('Feature: pii-redaction-filter, Property 2: No False Positives on Clean Text', () => {
+  it('returns an empty list for text containing no PII patterns', () => {
+    fc.assert(
+      fc.property(cleanText, (text: string) => {
+        const entities: PIIEntity[] = scan(text);
+        expect(entities).toEqual([]);
+      }),
       { numRuns: 100 }
     );
   });
