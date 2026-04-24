@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Commit After Task",
+  "description": "Automatically commits the code after each spec task is completed",
+  "version": "1",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "git add -A && git commit -m \"Task completed\""
+  }
+}

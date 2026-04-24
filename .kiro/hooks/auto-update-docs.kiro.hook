@@ -4,7 +4,7 @@
   "description": "When source files (TypeScript, JSON configs, or environment files) are edited, the agent reviews the changes and updates the README.md or docs folder to keep documentation in sync with the code.",
   "version": "1",
   "when": {
-    "type": "userTriggered"
+    "type": "postTaskExecution"
   },
   "then": {
     "type": "askAgent",

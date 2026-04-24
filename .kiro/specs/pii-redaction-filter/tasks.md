@@ -51,7 +51,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - **Validates: Requirements 10.7, 2.5**
 
 - [ ] 3. Implement Redaction_Engine
-  - [ ] 3.1 Implement the Redaction_Engine module
+  - [x] 3.1 Implement the Redaction_Engine module
     - Create `src/redaction-engine.ts` implementing the `RedactionEngine` interface
     - Replace each detected PII entity with its type-specific placeholder from `PLACEHOLDER_MAP`
     - Process entities in reverse `startIndex` order to preserve positions during replacement
@@ -75,7 +75,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - **Validates: Requirements 2.5, 8.5**
 
 - [ ] 4. Implement Ethics_Logic_Gate
-  - [ ] 4.1 Implement the Ethics_Logic_Gate module
+  - [~] 4.1 Implement the Ethics_Logic_Gate module
     - Create `src/ethics-logic-gate.ts` implementing the `EthicsLogicGate` interface
     - If any entity matches a "block" rule, return `allowed: false` with the blocked types and a reason
     - If all entities match "redact" rules (or type is absent from config, defaulting to "redact"), return `allowed: true`
@@ -98,11 +98,11 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate configs with valid and invalid PII type keys, verify accept/reject behavior
     - **Validates: Requirements 7.1, 7.3**
 
-- [ ] 5. Checkpoint - Ensure all tests pass
+- [~] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Implement Notification_Service
-  - [ ] 6.1 Implement the Notification_Service module
+  - [~] 6.1 Implement the Notification_Service module
     - Create `src/notification-service.ts` implementing the `NotificationService` interface
     - `createRedactionNotification`: produce a notification of type `'redaction'` with per-type counts from the redaction actions list
     - `createBlockNotification`: produce a notification of type `'block'` listing the blocked PII types and reason
@@ -125,7 +125,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - **Validates: Requirements 4.4**
 
 - [ ] 7. Implement PDF_Text_Extractor
-  - [ ] 7.1 Implement the PDF_Text_Extractor module
+  - [~] 7.1 Implement the PDF_Text_Extractor module
     - Create `src/pdf-text-extractor.ts` implementing the `PDFTextExtractor` interface using `pdf-parse`
     - Support up to 50 pages; throw `PDFPageLimitError` for documents exceeding this limit
     - Return `extractable: false` with empty text for image-only PDFs
@@ -141,7 +141,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - _Requirements: 9.2, 9.3, 9.6_
 
 - [ ] 8. Implement Chat_Proxy and Redaction_Report generation
-  - [ ] 8.1 Implement the Chat_Proxy module
+  - [~] 8.1 Implement the Chat_Proxy module
     - Create `src/chat-proxy.ts` implementing the `ChatProxy` interface
     - Orchestrate the pipeline: PDF extraction (if PDF attached) → PII scan → redaction → Ethics_Logic_Gate → forward or block
     - When allowed, forward redacted message to downstream chat service and return response
@@ -150,7 +150,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - On any unhandled pipeline component failure, block the message (fail-safe) and return error
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [ ] 8.2 Implement Redaction_Report generation
+  - [~] 8.2 Implement Redaction_Report generation
     - Generate SHA-256 hash of the original message (never store raw text)
     - Populate `detectedCounts` with per-type entity counts
     - Populate `actions` with the action taken for each entity
@@ -171,11 +171,11 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Test no PII detected → report with zero counts and `'none'` action
     - _Requirements: 3.6, 5.5, 6.3_
 
-- [ ] 9. Checkpoint - Ensure all tests pass
+- [~] 9. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Integration wiring and end-to-end tests
-  - [ ] 10.1 Wire all components together and create entry point
+  - [~] 10.1 Wire all components together and create entry point
     - Create `src/index.ts` that exports the Chat_Proxy with all dependencies wired together
     - Ensure the full pipeline is functional: request → PDF extraction → scan → redact → gate → notify → respond
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 9.4, 9.5_
@@ -190,7 +190,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Test performance: PDF extractor processes 50 pages in < 3 seconds
     - _Requirements: 1.5, 5.2, 5.3, 5.4, 9.7, 9.8_
 
-- [ ] 11. Final checkpoint - Ensure all tests pass
+- [~] 11. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
