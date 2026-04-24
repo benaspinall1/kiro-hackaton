@@ -88,7 +88,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random PII entity lists + rule configs with ≥1 "block" rule, verify gate returns `allowed: false` with correct `blockedTypes`
     - **Validates: Requirements 3.2, 3.3**
 
-  - [~] 4.3 Write property test: Redact-Only Rules Allow Message
+  - [x] 4.3 Write property test: Redact-Only Rules Allow Message
     - **Property 7: Redact-Only Rules Allow Message**
     - Generate random PII entity lists + rule configs with all "redact" or empty config, verify gate returns `allowed: true`
     - **Validates: Requirements 3.4, 3.5, 7.2**
