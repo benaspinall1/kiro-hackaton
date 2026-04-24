@@ -75,7 +75,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - **Validates: Requirements 2.5, 8.5**
 
 - [ ] 4. Implement Ethics_Logic_Gate
-  - [~] 4.1 Implement the Ethics_Logic_Gate module
+  - [x] 4.1 Implement the Ethics_Logic_Gate module
     - Create `src/ethics-logic-gate.ts` implementing the `EthicsLogicGate` interface
     - If any entity matches a "block" rule, return `allowed: false` with the blocked types and a reason
     - If all entities match "redact" rules (or type is absent from config, defaulting to "redact"), return `allowed: true`
