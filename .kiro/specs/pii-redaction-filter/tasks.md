@@ -69,7 +69,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate text with known PII positions, verify all non-PII segments remain unchanged after redaction
     - **Validates: Requirements 2.3**
 
-  - [~] 3.4 Write property test: Redaction Round-Trip
+  - [x] 3.4 Write property test: Redaction Round-Trip
     - **Property 5: Redaction Round-Trip**
     - Generate arbitrary text with PII, scan → redact → scan again, assert zero entities on second scan
     - **Validates: Requirements 2.5, 8.5**

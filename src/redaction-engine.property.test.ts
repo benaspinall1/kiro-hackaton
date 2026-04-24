@@ -264,3 +264,48 @@ describe('Feature: pii-redaction-filter, Property 4: Non-PII Text Preservation',
     );
   });
 });
+
+
+/**
+ * Feature: pii-redaction-filter, Property 5: Redaction Round-Trip
+ *
+ * For any valid input text, scanning for PII, redacting all detected entities,
+ * and then scanning the redacted output again SHALL yield zero PII entities.
+ * This ensures that redacted placeholders are never themselves flagged as PII
+ * and that redaction is complete.
+ *
+ * Validates: Requirements 2.5, 8.5
+ */
+describe('Feature: pii-redaction-filter, Property 5: Redaction Round-Trip', () => {
+  it('scan → redact → scan again yields zero PII entities', () => {
+    fc.assert(
+      fc.property(
+        fc.array(piiGen, { minLength: 1, maxLength: 5 }),
+        fc.array(safeSeparator, { minLength: 6, maxLength: 10 }),
+        (piiItems, separators) => {
+          // Build text with PII items separated by safe text on separate lines
+          const parts: string[] = [];
+          for (let i = 0; i < piiItems.length; i++) {
+            const sep = separators[i] || 'lorem';
+            parts.push(sep + ' ' + piiItems[i].value);
+          }
+          parts.push(separators[piiItems.length] || 'ipsum');
+          const text = parts.join('\n');
+
+          // First scan: detect PII entities
+          const entities = scan(text);
+
+          // Redact all detected entities
+          const { redactedText } = redact(text, entities);
+
+          // Second scan: re-scan the redacted output
+          const secondScanEntities = scan(redactedText);
+
+          // Assert zero PII entities on the second scan
+          expect(secondScanEntities).toHaveLength(0);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
