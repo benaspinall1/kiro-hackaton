@@ -98,7 +98,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate configs with valid and invalid PII type keys, verify accept/reject behavior
     - **Validates: Requirements 7.1, 7.3**
 
-- [~] 5. Checkpoint - Ensure all tests pass
+- [x] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Implement Notification_Service
