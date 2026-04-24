@@ -287,3 +287,135 @@ describe('Feature: pii-redaction-filter, Property 2: No False Positives on Clean
     );
   });
 });
+
+
+// ---------------------------------------------------------------------------
+// Property 13: File System Path Detection Accuracy
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 13: File System Path Detection Accuracy
+ *
+ * For any valid file system path of a supported style (Unix absolute, Unix
+ * home-relative, Windows drive, Windows UNC) containing valid path characters
+ * (letters, digits, dots, hyphens, underscores, spaces) embedded at any
+ * position within arbitrary surrounding text, the PII_Scanner SHALL detect it
+ * and return a PII_Entity with type FILE_PATH, where matchedText equals the
+ * original path string and text.substring(startIndex, endIndex) === matchedText.
+ *
+ * Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5, 10.8
+ */
+
+describe('Feature: pii-redaction-filter, Property 13: File System Path Detection Accuracy', () => {
+  it('detects Unix absolute paths embedded in random surrounding text', () => {
+    fc.assert(
+      fc.property(
+        unixAbsolutePathGen,
+        safeText,
+        safeText,
+        (pathObj, before, after) => {
+          const prefix = before.length > 0 ? before + ' ' : '';
+          const suffix = after.length > 0 ? ' ' + after : '';
+          const text = prefix + pathObj.value + suffix;
+
+          const entities = scan(text);
+          const matching = entities.filter((e) => e.type === 'FILE_PATH');
+
+          expect(matching.length).toBeGreaterThanOrEqual(1);
+
+          const found = matching.some(
+            (e) =>
+              text.substring(e.startIndex, e.endIndex) === e.matchedText &&
+              e.matchedText.includes(pathObj.value)
+          );
+          expect(found).toBe(true);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  it('detects Unix home-relative paths embedded in random surrounding text', () => {
+    fc.assert(
+      fc.property(
+        unixHomePathGen,
+        safeText,
+        safeText,
+        (pathObj, before, after) => {
+          const prefix = before.length > 0 ? before + ' ' : '';
+          const suffix = after.length > 0 ? ' ' + after : '';
+          const text = prefix + pathObj.value + suffix;
+
+          const entities = scan(text);
+          const matching = entities.filter((e) => e.type === 'FILE_PATH');
+
+          expect(matching.length).toBeGreaterThanOrEqual(1);
+
+          const found = matching.some(
+            (e) =>
+              text.substring(e.startIndex, e.endIndex) === e.matchedText &&
+              e.matchedText.includes(pathObj.value)
+          );
+          expect(found).toBe(true);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  it('detects Windows drive paths embedded in random surrounding text', () => {
+    fc.assert(
+      fc.property(
+        windowsDrivePathGen,
+        safeText,
+        safeText,
+        (pathObj, before, after) => {
+          const prefix = before.length > 0 ? before + ' ' : '';
+          const suffix = after.length > 0 ? ' ' + after : '';
+          const text = prefix + pathObj.value + suffix;
+
+          const entities = scan(text);
+          const matching = entities.filter((e) => e.type === 'FILE_PATH');
+
+          expect(matching.length).toBeGreaterThanOrEqual(1);
+
+          const found = matching.some(
+            (e) =>
+              text.substring(e.startIndex, e.endIndex) === e.matchedText &&
+              e.matchedText.includes(pathObj.value)
+          );
+          expect(found).toBe(true);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  it('detects Windows UNC paths embedded in random surrounding text', () => {
+    fc.assert(
+      fc.property(
+        windowsUNCPathGen,
+        safeText,
+        safeText,
+        (pathObj, before, after) => {
+          const prefix = before.length > 0 ? before + ' ' : '';
+          const suffix = after.length > 0 ? ' ' + after : '';
+          const text = prefix + pathObj.value + suffix;
+
+          const entities = scan(text);
+          const matching = entities.filter((e) => e.type === 'FILE_PATH');
+
+          expect(matching.length).toBeGreaterThanOrEqual(1);
+
+          const found = matching.some(
+            (e) =>
+              text.substring(e.startIndex, e.endIndex) === e.matchedText &&
+              e.matchedText.includes(pathObj.value)
+          );
+          expect(found).toBe(true);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
