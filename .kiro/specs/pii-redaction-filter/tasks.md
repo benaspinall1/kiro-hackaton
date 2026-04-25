@@ -175,7 +175,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Integration wiring and end-to-end tests
-  - [~] 10.1 Wire all components together and create entry point
+  - [x] 10.1 Wire all components together and create entry point
     - Create `src/index.ts` that exports the Chat_Proxy with all dependencies wired together
     - Ensure the full pipeline is functional: request → PDF extraction → scan → redact → gate → notify → respond
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 9.4, 9.5_

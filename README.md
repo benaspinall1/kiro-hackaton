@@ -45,6 +45,23 @@ npm test
 
 Tests use [Vitest](https://vitest.dev/) with [fast-check](https://github.com/dubzzz/fast-check) for property-based testing.
 
+## Usage
+
+```typescript
+import { createChatProxy, PrivacyRuleConfig } from './src';
+
+const rules: PrivacyRuleConfig = {
+  rules: { SSN: 'block', CREDIT_CARD: 'block', EMAIL: 'redact' },
+};
+
+const proxy = createChatProxy(async (message) => {
+  // Forward to your downstream chat service
+  return 'response from service';
+});
+
+const result = await proxy.processRequest({ prompt: 'Hello' }, rules);
+```
+
 ## Privacy Rule Configuration
 
 Map each PII type to `"block"` or `"redact"`. Types not listed default to `"redact"`.
