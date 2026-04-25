@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { createRedactionNotification } from './notification-service';
+import { createRedactionNotification, createBlockNotification } from './notification-service';
 import { PIIType, RedactionAction } from './types';
 
 /**
@@ -75,6 +75,64 @@ describe('Feature: pii-redaction-filter, Property 8: Redaction Notification Corr
         // Verify details match expected counts for every PII type
         for (const piiType of ALL_PII_TYPES) {
           expect(result!.details[piiType]).toBe(expectedCounts[piiType]);
+        }
+      }),
+      { numRuns: 100 }
+    );
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Property 9 – Generators
+// ---------------------------------------------------------------------------
+
+/**
+ * Generate a non-empty subset of PIIType values (the blocked types).
+ *
+ * Strategy:
+ * 1. Shuffle ALL_PII_TYPES.
+ * 2. Pick a random length between 1 and ALL_PII_TYPES.length.
+ * 3. Slice to that length to get a unique, non-empty subset.
+ */
+const nonEmptyPIITypeSubsetArb: fc.Arbitrary<PIIType[]> = fc
+  .shuffledSubarray(ALL_PII_TYPES, { minLength: 1, maxLength: ALL_PII_TYPES.length });
+
+/** Generate a non-empty reason string */
+const reasonArb: fc.Arbitrary<string> = fc.string({ minLength: 1, maxLength: 100 });
+
+// ---------------------------------------------------------------------------
+// Property 9 – Test
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 9: Block Notification Correctness
+ *
+ * For any gate result where `allowed` is false, the Notification_Service SHALL
+ * produce a notification of type 'block' that lists exactly the PII types
+ * present in `blockedTypes`.
+ *
+ * Validates: Requirements 4.2
+ */
+describe('Feature: pii-redaction-filter, Property 9: Block Notification Correctness', () => {
+  it('produces a block notification with correct type and exactly the blocked PII types', () => {
+    fc.assert(
+      fc.property(nonEmptyPIITypeSubsetArb, reasonArb, (blockedTypes, reason) => {
+        const result = createBlockNotification(blockedTypes, reason);
+
+        // Type must be 'block'
+        expect(result.type).toBe('block');
+
+        // Each blocked type should have count 1 in details
+        for (const piiType of blockedTypes) {
+          expect(result.details[piiType]).toBe(1);
+        }
+
+        // Each non-blocked type should have count 0 in details
+        const blockedSet = new Set(blockedTypes);
+        for (const piiType of ALL_PII_TYPES) {
+          if (!blockedSet.has(piiType)) {
+            expect(result.details[piiType]).toBe(0);
+          }
         }
       }),
       { numRuns: 100 }
