@@ -151,7 +151,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 7. Implement message flow orchestration and wiring
-  - [~] 7.1 Implement message submission flow controller
+  - [x] 7.1 Implement message submission flow controller
     - Create `src/frontend/chat-controller.ts`
     - On message submit: call `scanForPII`, check for PII entities
     - If no PII detected: send original message directly to `sendMessage`, display reply
