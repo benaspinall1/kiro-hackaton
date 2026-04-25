@@ -94,7 +94,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
 
 - [ ] 5. Implement UI components
-  - [~] 5.1 Implement MessageBubble component
+  - [x] 5.1 Implement MessageBubble component
     - Create `src/frontend/components/message-bubble.ts`
     - Render user messages right-aligned with user background color
     - Render assistant messages left-aligned with assistant background color

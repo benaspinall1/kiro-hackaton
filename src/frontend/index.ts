@@ -28,3 +28,5 @@ export {
 export { segmentText } from './pii-highlighter';
 
 export { filterEnabledEntities, autoRedactAll } from './redaction-filter';
+
+export { renderMessageBubble } from './components/message-bubble';
