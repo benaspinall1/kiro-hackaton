@@ -114,7 +114,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random non-empty RedactionAction lists, verify notification type is `'redaction'` and `details` counts are correct
     - **Validates: Requirements 4.1**
 
-  - [~] 6.3 Write property test: Block Notification Correctness
+  - [x] 6.3 Write property test: Block Notification Correctness
     - **Property 9: Block Notification Correctness**
     - Generate random GateResult with `allowed: false`, verify notification type is `'block'` and lists exactly the blocked types
     - **Validates: Requirements 4.2**
