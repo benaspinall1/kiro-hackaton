@@ -20,4 +20,7 @@ export {
   // Constants
   PII_COLOR_MAP,
   RISK_LEVEL_MAP,
+  // Utility functions
+  getRiskLevel,
+  getPIIIcon,
 } from './types';
