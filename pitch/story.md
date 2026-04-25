@@ -63,3 +63,5 @@ These are smart, capable people doing something completely reasonable: using a t
 That's the gap we sit in. One small moment of awareness — quiet, respectful, and fast enough that it doesn't break your flow.
 
 That's it. That's the whole idea.
+
+
