@@ -160,7 +160,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Combine text prompt and PDF scan results into a single report when both are present
     - _Requirements: 6.1, 6.2, 6.3, 9.3, 9.8_
 
-  - [~] 8.3 Write property test: Redaction Report Structure
+  - [x] 8.3 Write property test: Redaction Report Structure
     - **Property 11: Redaction Report Structure**
     - Generate random messages, process through pipeline, verify `messageHash` is valid SHA-256 hex, `detectedCounts` match actual counts, `actions` match actions taken, and `timestamp` is valid ISO 8601
     - **Validates: Requirements 6.1**
