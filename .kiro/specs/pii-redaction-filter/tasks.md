@@ -140,7 +140,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Test PDF exceeding 50 pages → `PDFPageLimitError`
     - _Requirements: 9.2, 9.3, 9.6_
 
-- [ ] 8. Implement Chat_Proxy and Redaction_Report generation
+- [x] 8. Implement Chat_Proxy and Redaction_Report generation
   - [x] 8.1 Implement the Chat_Proxy module
     - Create `src/chat-proxy.ts` implementing the `ChatProxy` interface
     - Orchestrate the pipeline: PDF extraction (if PDF attached) → PII scan → redaction → Ethics_Logic_Gate → forward or block
