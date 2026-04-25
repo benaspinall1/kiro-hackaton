@@ -66,7 +66,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Implement `resetSessionStats(): void` — clears the session stats entry
     - _Requirements: 8.1, 8.2, 8.3_
 
-  - [~] 2.7 Write property test for session stats accumulation (Property 4)
+  - [x] 2.7 Write property test for session stats accumulation (Property 4)
     - **Property 4: Session Stats Accumulation**
     - Generate sequences of 1–50 non-negative integers
     - Apply each as a redaction count increment, verify running total equals sum of all counts
