@@ -32,3 +32,6 @@ export { filterEnabledEntities, autoRedactAll } from './redaction-filter';
 export { renderMessageBubble } from './components/message-bubble';
 
 export { renderPIIItemCard } from './components/pii-item-card';
+
+export { renderPrivacyLensPanel } from './components/privacy-lens-panel';
+export type { PrivacyLensPanelProps } from './components/privacy-lens-panel';
