@@ -147,7 +147,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Test send button disabled when input is empty
     - _Requirements: 1.1, 1.2, 1.4, 2.4, 3.2, 4.2, 4.3, 4.4, 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [~] 6. Checkpoint
+- [x] 6. Checkpoint
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 7. Implement message flow orchestration and wiring
