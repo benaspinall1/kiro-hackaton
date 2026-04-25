@@ -109,7 +109,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Return `null` when no PII entities are detected (no notification generated)
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-  - [~] 6.2 Write property test: Redaction Notification Correctness
+  - [x] 6.2 Write property test: Redaction Notification Correctness
     - **Property 8: Redaction Notification Correctness**
     - Generate random non-empty RedactionAction lists, verify notification type is `'redaction'` and `details` counts are correct
     - **Validates: Requirements 4.1**
