@@ -119,7 +119,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random GateResult with `allowed: false`, verify notification type is `'block'` and lists exactly the blocked types
     - **Validates: Requirements 4.2**
 
-  - [~] 6.4 Write property test: No Notification for Clean Messages
+  - [x] 6.4 Write property test: No Notification for Clean Messages
     - **Property 10: No Notification for Clean Messages**
     - Generate non-PII text, process through pipeline, verify null notification
     - **Validates: Requirements 4.4**

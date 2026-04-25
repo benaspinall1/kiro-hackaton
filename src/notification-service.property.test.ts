@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { createRedactionNotification, createBlockNotification } from './notification-service';
+import { scan } from './pii-scanner';
+import { redact } from './redaction-engine';
 import { PIIType, RedactionAction } from './types';
 
 /**
@@ -134,6 +136,63 @@ describe('Feature: pii-redaction-filter, Property 9: Block Notification Correctn
             expect(result.details[piiType]).toBe(0);
           }
         }
+      }),
+      { numRuns: 100 }
+    );
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Property 10 – Generators
+// ---------------------------------------------------------------------------
+
+/**
+ * Generate clean text that contains no PII patterns.
+ *
+ * Strategy: produce purely alphabetic words separated by spaces.
+ * No digits, no @, no /, no \, no ~ — avoids triggering any PII regex.
+ */
+const cleanWordArb: fc.Arbitrary<string> = fc
+  .array(fc.constantFrom(...'abcdefghijklmnopqrstuvwxyz'.split('')), {
+    minLength: 1,
+    maxLength: 12,
+  })
+  .map((chars) => chars.join(''));
+
+const cleanTextArb: fc.Arbitrary<string> = fc
+  .array(cleanWordArb, { minLength: 1, maxLength: 20 })
+  .map((words) => words.join(' '));
+
+// ---------------------------------------------------------------------------
+// Property 10 – Test
+// ---------------------------------------------------------------------------
+
+/**
+ * Feature: pii-redaction-filter, Property 10: No Notification for Clean Messages
+ *
+ * For any text containing no PII entities, processing through the pipeline
+ * SHALL produce a null notification (no PII-related notification is generated).
+ *
+ * Validates: Requirements 4.4
+ */
+describe('Feature: pii-redaction-filter, Property 10: No Notification for Clean Messages', () => {
+  it('produces null notification when text contains no PII', () => {
+    fc.assert(
+      fc.property(cleanTextArb, (text) => {
+        // Step 1: Scan the clean text — should find no PII entities
+        const entities = scan(text);
+        expect(entities).toHaveLength(0);
+
+        // Step 2: Redact (should be a no-op on clean text)
+        const { redactions } = redact(text, entities);
+        expect(redactions).toHaveLength(0);
+
+        // Step 3: Create notification from empty redactions list
+        const notification = createRedactionNotification(redactions);
+
+        // Step 4: Notification must be null for clean messages
+        expect(notification).toBeNull();
       }),
       { numRuns: 100 }
     );
