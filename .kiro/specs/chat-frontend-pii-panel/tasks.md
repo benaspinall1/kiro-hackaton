@@ -21,7 +21,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - _Requirements: 5.1, 5.3_
 
 - [ ] 2. Implement core logic functions
-  - [~] 2.1 Implement `segmentText` function
+  - [x] 2.1 Implement `segmentText` function
     - Create `src/frontend/pii-highlighter.ts`
     - Implement `segmentText(text: string, entities: PIIEntity[]): TextSegment[]`
     - Iterate through sorted entities, splitting text into alternating plain and highlighted segments
