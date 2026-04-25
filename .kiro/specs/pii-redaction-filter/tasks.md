@@ -171,7 +171,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Test no PII detected → report with zero counts and `'none'` action
     - _Requirements: 3.6, 5.5, 6.3_
 
-- [~] 9. Checkpoint - Ensure all tests pass
+- [x] 9. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Integration wiring and end-to-end tests
