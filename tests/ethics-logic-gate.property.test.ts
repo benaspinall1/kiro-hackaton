@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { evaluate } from './ethics-logic-gate';
-import { PIIType, PIIEntity, PrivacyRuleConfig } from './types';
+import { evaluate } from '../src/ethics-logic-gate';
+import { PIIType, PIIEntity, PrivacyRuleConfig } from '../src/types';
 
 /**
  * Feature: pii-redaction-filter, Property 6: Block Rule Enforcement
@@ -214,7 +214,7 @@ describe('Feature: pii-redaction-filter, Property 7: Redact-Only Rules Allow Mes
 // Property 12: Privacy Rule Configuration Validation
 // ---------------------------------------------------------------------------
 
-import { validateConfig } from './ethics-logic-gate';
+import { validateConfig } from '../src/ethics-logic-gate';
 
 /**
  * Feature: pii-redaction-filter, Property 12: Privacy Rule Configuration Validation

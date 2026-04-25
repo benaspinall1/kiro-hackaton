@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { scan } from './pii-scanner';
-import { redact } from './redaction-engine';
-import { PIIType, PLACEHOLDER_MAP } from './types';
+import { scan } from '../src/pii-scanner';
+import { redact } from '../src/redaction-engine';
+import { PIIType, PLACEHOLDER_MAP } from '../src/types';
 
 /**
  * Feature: pii-redaction-filter, Property 3: Correct Redaction with Type-Specific Placeholders

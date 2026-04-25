@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { ChatProxyImpl, DownstreamService } from './chat-proxy';
-import { PIIType, PrivacyRuleConfig } from './types';
-import { scan } from './pii-scanner';
+import { ChatProxyImpl, DownstreamService } from '../src/chat-proxy';
+import { PIIType, PrivacyRuleConfig } from '../src/types';
+import { scan } from '../src/pii-scanner';
 
 /**
  * Feature: pii-redaction-filter, Property 11: Redaction Report Structure

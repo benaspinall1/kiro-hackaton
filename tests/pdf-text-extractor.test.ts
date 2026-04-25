@@ -4,7 +4,7 @@ import {
   PDFPasswordProtectedError,
   PDFPageLimitError,
   PDFTimeoutError,
-} from './errors';
+} from '../src/errors';
 
 // Mock pdf-parse module
 const mockGetText = vi.fn();
@@ -38,7 +38,7 @@ vi.mock('pdf-parse', () => {
   };
 });
 
-import { PDFTextExtractorImpl } from './pdf-text-extractor';
+import { PDFTextExtractorImpl } from '../src/pdf-text-extractor';
 
 describe('PDFTextExtractorImpl', () => {
   let extractor: PDFTextExtractorImpl;

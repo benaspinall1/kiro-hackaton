@@ -15,6 +15,6 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["src/**/*", "tests/integration.test.ts", "tests/redaction-engine.test.ts", "tests/pii-scanner.property.test.ts", "tests/pii-scanner.test.ts", "tests/pdf-text-extractor.test.ts", "tests/notification-service.test.ts", "tests/ethics-logic-gate.test.ts", "tests/chat-proxy.property.test.ts"],
+  "exclude": ["node_modules", "dist", "tests"]
 }

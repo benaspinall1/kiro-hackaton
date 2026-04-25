@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { createRedactionNotification, createBlockNotification } from './notification-service';
-import { RedactionAction } from './types';
+import { createRedactionNotification, createBlockNotification } from '../src/notification-service';
+import { RedactionAction } from '../src/types';
 
 describe('NotificationService', () => {
   describe('createRedactionNotification', () => {
