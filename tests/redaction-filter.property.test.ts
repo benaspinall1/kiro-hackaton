@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { filterEnabledEntities } from '../src/frontend/redaction-filter';
+import { filterEnabledEntities, autoRedactAll } from '../src/frontend/redaction-filter';
 import type { PIIEntity, PIIType } from '../src/types';
 import type { PIIItemState } from '../src/frontend/types';
 
@@ -106,6 +106,40 @@ describe('Feature: chat-frontend-pii-panel, Property 2: Selective Redaction Filt
           }
         }
       ),
+      { numRuns: 100 }
+    );
+  });
+});
+
+
+/**
+ * Feature: chat-frontend-pii-panel, Property 3: Auto-Redact Enables All Toggles
+ *
+ * For any array of PIIItemState objects with arbitrary redactionEnabled boolean
+ * values, applying the autoRedactAll operation SHALL produce an array of the same
+ * length where every item has redactionEnabled === true, and all entity references
+ * remain unchanged.
+ *
+ * Validates: Requirements 6.3
+ */
+
+describe('Feature: chat-frontend-pii-panel, Property 3: Auto-Redact Enables All Toggles', () => {
+  it('all items have redactionEnabled === true after autoRedactAll, array length unchanged, entity references unchanged', () => {
+    fc.assert(
+      fc.property(piiItemStatesArb, (items) => {
+        const result = autoRedactAll(items);
+
+        // Array length unchanged
+        expect(result.length).toBe(items.length);
+
+        for (let i = 0; i < result.length; i++) {
+          // All toggles enabled
+          expect(result[i].redactionEnabled).toBe(true);
+
+          // Entity references preserved (same object reference)
+          expect(result[i].entity).toBe(items[i].entity);
+        }
+      }),
       { numRuns: 100 }
     );
   });
