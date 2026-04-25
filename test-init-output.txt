@@ -1,9 +1,0 @@
-
- RUN  v4.1.5 /home/aspraxis/code/college/hackathon/kiro
-
-
- Test Files  1 passed (1)
-      Tests  13 passed (13)
-   Start at  18:47:28
-   Duration  121ms (transform 39ms, setup 0ms, import 53ms, tests 5ms, environment 0ms)
-
