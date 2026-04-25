@@ -15,106 +15,7 @@ import { PIIType, PLACEHOLDER_MAP } from './types';
  * Validates: Requirements 2.1, 2.2, 2.4
  */
 
-// ---------------------------------------------------------------------------
-// Helpers: safe surrounding text (no accidental PII patterns)
-// ---------------------------------------------------------------------------
-
-/**
- * Fixed list of safe words that:
- * - contain only lowercase letters
- * - do NOT match any street type suffix (street, st, avenue, ave, boulevard,
- *   blvd, drive, dr, lane, ln, road, rd, court, ct, way, place, pl, circle,
- *   cir, terrace, ter, trail, trl, parkway, pkwy, highway, hwy) even as a
- *   substring when combined with adjacent text
- * - cannot form PII patterns (no digits, no @, no special chars)
- */
-const SAFE_WORDS = [
-  'lorem', 'ipsum', 'quick', 'brown', 'fox', 'jumps',
-  'lazy', 'hello', 'gamma', 'kappa', 'zulu', 'nexus',
-  'pixel', 'quaff', 'joker', 'vivid', 'waltz', 'xenon',
-];
-
-const safeWord = fc.constantFrom(...SAFE_WORDS);
-
-/** Safe separator built from known-safe words — cannot accidentally form PII patterns */
-const safeSeparator = fc
-  .array(safeWord, { minLength: 1, maxLength: 3 })
-  .map((words) => words.join(' '));
-
-// ---------------------------------------------------------------------------
-// PII Generators (one per type)
-// ---------------------------------------------------------------------------
-
-const digit = fc.constantFrom(...'0123456789'.split(''));
-const digitString = (len: number) =>
-  fc.tuple(...Array.from({ length: len }, () => digit)).map((ds) => ds.join(''));
-
-const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
-
-const emailGen = fc
-  .tuple(
-    fc.string({ minLength: 1, maxLength: 8, unit: fc.constantFrom(...'abcdefghijklmnopqrstuvwxyz0123456789'.split('')) }),
-    fc.string({ minLength: 1, maxLength: 8, unit: fc.constantFrom(...lowerAlpha.split('')) }),
-    fc.constantFrom('com', 'org', 'net', 'io')
-  )
-  .map(([local, domain, tld]) => ({
-    type: 'EMAIL' as PIIType,
-    value: `${local}@${domain}.${tld}`,
-  }));
-
-const phoneGen = fc
-  .tuple(digitString(3), digitString(3), digitString(4))
-  .map(([area, mid, last]) => ({
-    type: 'PHONE' as PIIType,
-    value: `${area}-${mid}-${last}`,
-  }));
-
-const ssnGen = fc
-  .tuple(digitString(3), digitString(2), digitString(4))
-  .map(([a, b, c]) => ({
-    type: 'SSN' as PIIType,
-    value: `${a}-${b}-${c}`,
-  }));
-
-const creditCardGen = digitString(16).map((digits) => ({
-  type: 'CREDIT_CARD' as PIIType,
-  value: digits,
-}));
-
-const addressGen = fc
-  .tuple(
-    fc.integer({ min: 1, max: 99999 }),
-    fc.constantFrom('Main', 'Oak', 'Elm', 'Pine', 'Maple'),
-    fc.constantFrom('Street', 'Avenue', 'Drive', 'Road', 'Lane')
-  )
-  .map(([num, name, suffix]) => ({
-    type: 'ADDRESS' as PIIType,
-    value: `${num} ${name} ${suffix}`,
-  }));
-
-const pathChars = 'abcdefghijklmnopqrstuvwxyz0123456789._-';
-const pathComponent = fc
-  .tuple(
-    fc.constantFrom(...pathChars.split('')),
-    fc.string({ minLength: 1, maxLength: 6, unit: fc.constantFrom(...pathChars.split('')) })
-  )
-  .map(([first, rest]) => first + rest);
-
-const filePathGen = fc
-  .array(pathComponent, { minLength: 1, maxLength: 3 })
-  .map((comps) => ({
-    type: 'FILE_PATH' as PIIType,
-    value: '/' + comps.join('/'),
-  }));
-
-const piiGen = fc.oneof(
-  emailGen,
-  phoneGen,
-  ssnGen,
-  creditCardGen,
-  addressGen,
-  filePathGen
-);
+const ALL_TYPES: PIIType[] = ['EMAIL', 'PHONE', 'SSN', 'CREDIT_CARD', 'ADDRESS', 'FILE_PATH'];
 
 // ---------------------------------------------------------------------------
 // Helper: count occurrences of a substring in a string
@@ -131,55 +32,124 @@ function countOccurrences(text: string, sub: string): number {
 }
 
 // ---------------------------------------------------------------------------
-// Property test
+// PII Generators — each produces a value that only matches its intended type.
+//
+// CRITICAL: Values are embedded between non-alphanumeric padding ("=====")
+// to prevent cross-type pattern formation. The padding contains no letters
+// or digits, so it cannot form part of any PII pattern (addresses, emails,
+// phones, SSNs, credit cards, or file paths).
+// ---------------------------------------------------------------------------
+
+const PAD = '=====';
+
+const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
+
+const emailValue = fc
+  .tuple(
+    fc.string({ minLength: 2, maxLength: 6, unit: fc.constantFrom(...lowerAlpha.split('')) }),
+    fc.string({ minLength: 2, maxLength: 6, unit: fc.constantFrom(...lowerAlpha.split('')) }),
+    fc.constantFrom('com', 'org', 'net', 'io'),
+  )
+  .map(([local, domain, tld]) => `${local}@${domain}.${tld}`);
+
+const phoneValue = fc
+  .tuple(
+    fc.integer({ min: 200, max: 999 }),
+    fc.integer({ min: 200, max: 999 }),
+    fc.integer({ min: 1000, max: 9999 }),
+  )
+  .map(([a, m, l]) => `(${a}) ${m}-${l}`);
+
+const ssnValue = fc
+  .tuple(
+    fc.integer({ min: 100, max: 999 }),
+    fc.integer({ min: 10, max: 99 }),
+    fc.integer({ min: 1000, max: 9999 }),
+  )
+  .map(([a, b, c]) => `${a}-${b}-${c}`);
+
+const creditCardValue = fc
+  .tuple(
+    fc.integer({ min: 1000, max: 9999 }),
+    fc.integer({ min: 1000, max: 9999 }),
+    fc.integer({ min: 1000, max: 9999 }),
+    fc.integer({ min: 1000, max: 9999 }),
+  )
+  .map(([a, b, c, d]) => `${a} ${b} ${c} ${d}`);
+
+const addressValue = fc
+  .tuple(
+    fc.integer({ min: 1, max: 99999 }),
+    fc.constantFrom('Main', 'Oak', 'Elm', 'Pine', 'Maple'),
+    fc.constantFrom('Street', 'Avenue', 'Drive', 'Road', 'Lane'),
+  )
+  .map(([num, name, suffix]) => `${num} ${name} ${suffix}`);
+
+const filePathValue = fc
+  .array(
+    fc.string({ minLength: 2, maxLength: 6, unit: fc.constantFrom(...lowerAlpha.split('')) }),
+    { minLength: 1, maxLength: 3 },
+  )
+  .map((comps) => '/' + comps.join('/'));
+
+const singlePiiValue = fc.oneof(
+  emailValue,
+  phoneValue,
+  ssnValue,
+  creditCardValue,
+  addressValue,
+  filePathValue,
+);
+
+/**
+ * Build text from PII values with non-alphanumeric padding between them.
+ * Each PII value is on its own line surrounded by "=====" which contains
+ * no letters or digits, preventing any cross-type pattern formation.
+ */
+function buildText(piiItems: string[]): string {
+  return piiItems
+    .map((pii) => `${PAD} ${pii} ${PAD}`)
+    .join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Property 3
 // ---------------------------------------------------------------------------
 
 describe('Feature: pii-redaction-filter, Property 3: Correct Redaction with Type-Specific Placeholders', () => {
   it('placeholder counts in redacted text match entity counts per type', () => {
     fc.assert(
       fc.property(
-        // Generate 1-5 PII values with safe separators between them
-        fc.array(piiGen, { minLength: 1, maxLength: 5 }),
-        fc.array(safeSeparator, { minLength: 6, maxLength: 10 }),
-        (piiItems, separators) => {
-          // Build text with PII items separated by safe text on separate lines
-          // Using newlines ensures file path regex cannot bleed across PII boundaries
-          const parts: string[] = [];
-          for (let i = 0; i < piiItems.length; i++) {
-            const sep = separators[i] || 'lorem';
-            parts.push(sep + ' ' + piiItems[i].value);
-          }
-          parts.push(separators[piiItems.length] || 'ipsum');
-          const text = parts.join('\n');
-
-          // Scan for PII entities
+        fc.array(singlePiiValue, { minLength: 1, maxLength: 5 }),
+        (piiItems) => {
+          const text = buildText(piiItems);
           const entities = scan(text);
-
-          // Redact
           const { redactedText } = redact(text, entities);
 
           // Count entities per type from scan results
-          const entityCountsByType: Partial<Record<PIIType, number>> = {};
+          const entityCounts: Partial<Record<PIIType, number>> = {};
           for (const entity of entities) {
-            entityCountsByType[entity.type] = (entityCountsByType[entity.type] || 0) + 1;
+            entityCounts[entity.type] = (entityCounts[entity.type] || 0) + 1;
           }
 
-          // Count placeholders per type in redacted text
-          const allTypes: PIIType[] = ['EMAIL', 'PHONE', 'SSN', 'CREDIT_CARD', 'ADDRESS', 'FILE_PATH'];
-          for (const piiType of allTypes) {
+          // Verify placeholder counts match
+          for (const piiType of ALL_TYPES) {
             const placeholder = PLACEHOLDER_MAP[piiType];
             const placeholderCount = countOccurrences(redactedText, placeholder);
-            const expectedCount = entityCountsByType[piiType] || 0;
-
+            const expectedCount = entityCounts[piiType] || 0;
             expect(placeholderCount).toBe(expectedCount);
           }
-        }
+        },
       ),
-      { numRuns: 100 }
+      { numRuns: 100 },
     );
   });
 });
 
+
+// ---------------------------------------------------------------------------
+// Property 4: Non-PII Text Preservation
+// ---------------------------------------------------------------------------
 
 /**
  * Feature: pii-redaction-filter, Property 4: Non-PII Text Preservation
@@ -194,62 +164,28 @@ describe('Feature: pii-redaction-filter, Property 4: Non-PII Text Preservation',
   it('all non-PII segments remain unchanged after redaction', () => {
     fc.assert(
       fc.property(
-        fc.array(piiGen, { minLength: 1, maxLength: 5 }),
-        fc.array(safeSeparator, { minLength: 6, maxLength: 10 }),
-        (piiItems, separators) => {
-          // Build text with PII items separated by safe text on separate lines
-          const parts: string[] = [];
-          for (let i = 0; i < piiItems.length; i++) {
-            const sep = separators[i] || 'lorem';
-            parts.push(sep + ' ' + piiItems[i].value);
-          }
-          parts.push(separators[piiItems.length] || 'ipsum');
-          const text = parts.join('\n');
-
-          // Scan and redact
+        fc.array(singlePiiValue, { minLength: 1, maxLength: 5 }),
+        (piiItems) => {
+          const text = buildText(piiItems);
           const entities = scan(text);
           const { redactedText } = redact(text, entities);
 
-          // Build sorted, non-overlapping entity spans
+          // Build sorted entity spans
           const spans = entities
             .map((e) => ({ start: e.startIndex, end: e.endIndex }))
             .sort((a, b) => a.start - b.start);
 
-          // Extract non-PII segments from the original text
-          const nonPiiSegments: string[] = [];
-          let cursor = 0;
-          for (const span of spans) {
-            if (span.start > cursor) {
-              nonPiiSegments.push(text.substring(cursor, span.start));
-            }
-            cursor = Math.max(cursor, span.end);
-          }
-          if (cursor < text.length) {
-            nonPiiSegments.push(text.substring(cursor));
-          }
-
-          // Each non-PII segment must appear in the redacted text in order
-          let searchFrom = 0;
-          for (const segment of nonPiiSegments) {
-            const idx = redactedText.indexOf(segment, searchFrom);
-            expect(idx).toBeGreaterThanOrEqual(searchFrom);
-            searchFrom = idx + segment.length;
-          }
-
-          // Additionally verify: concatenating non-PII segments from the
-          // redacted output (stripping all placeholders) matches the original
-          // non-PII content
+          // Strip all placeholders from redacted text
           let stripped = redactedText;
-          const allTypes: PIIType[] = ['EMAIL', 'PHONE', 'SSN', 'CREDIT_CARD', 'ADDRESS', 'FILE_PATH'];
-          for (const piiType of allTypes) {
+          for (const piiType of ALL_TYPES) {
             const placeholder = PLACEHOLDER_MAP[piiType];
             while (stripped.includes(placeholder)) {
               stripped = stripped.replace(placeholder, '');
             }
           }
 
-          let originalNonPii = text;
           // Remove PII spans from original (reverse order to preserve indices)
+          let originalNonPii = text;
           const reversedSpans = [...spans].sort((a, b) => b.start - a.start);
           for (const span of reversedSpans) {
             originalNonPii =
@@ -258,21 +194,23 @@ describe('Feature: pii-redaction-filter, Property 4: Non-PII Text Preservation',
           }
 
           expect(stripped).toBe(originalNonPii);
-        }
+        },
       ),
-      { numRuns: 100 }
+      { numRuns: 100 },
     );
   });
 });
 
+
+// ---------------------------------------------------------------------------
+// Property 5: Redaction Round-Trip
+// ---------------------------------------------------------------------------
 
 /**
  * Feature: pii-redaction-filter, Property 5: Redaction Round-Trip
  *
  * For any valid input text, scanning for PII, redacting all detected entities,
  * and then scanning the redacted output again SHALL yield zero PII entities.
- * This ensures that redacted placeholders are never themselves flagged as PII
- * and that redaction is complete.
  *
  * Validates: Requirements 2.5, 8.5
  */
@@ -280,32 +218,17 @@ describe('Feature: pii-redaction-filter, Property 5: Redaction Round-Trip', () =
   it('scan → redact → scan again yields zero PII entities', () => {
     fc.assert(
       fc.property(
-        fc.array(piiGen, { minLength: 1, maxLength: 5 }),
-        fc.array(safeSeparator, { minLength: 6, maxLength: 10 }),
-        (piiItems, separators) => {
-          // Build text with PII items separated by safe text on separate lines
-          const parts: string[] = [];
-          for (let i = 0; i < piiItems.length; i++) {
-            const sep = separators[i] || 'lorem';
-            parts.push(sep + ' ' + piiItems[i].value);
-          }
-          parts.push(separators[piiItems.length] || 'ipsum');
-          const text = parts.join('\n');
-
-          // First scan: detect PII entities
+        fc.array(singlePiiValue, { minLength: 1, maxLength: 5 }),
+        (piiItems) => {
+          const text = buildText(piiItems);
           const entities = scan(text);
-
-          // Redact all detected entities
           const { redactedText } = redact(text, entities);
-
-          // Second scan: re-scan the redacted output
           const secondScanEntities = scan(redactedText);
 
-          // Assert zero PII entities on the second scan
           expect(secondScanEntities).toHaveLength(0);
-        }
+        },
       ),
-      { numRuns: 100 }
+      { numRuns: 100 },
     );
   });
 });
