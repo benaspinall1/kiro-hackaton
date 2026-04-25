@@ -26,3 +26,5 @@ export {
 } from './types';
 
 export { segmentText } from './pii-highlighter';
+
+export { filterEnabledEntities, autoRedactAll } from './redaction-filter';

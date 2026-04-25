@@ -7,6 +7,8 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RISK_LEVEL_MAP = exports.PII_COLOR_MAP = void 0;
+exports.getRiskLevel = getRiskLevel;
+exports.getPIIIcon = getPIIIcon;
 /**
  * Background color map for inline PII highlighting.
  * Each PIIType maps to a CSS background color string.
@@ -32,4 +34,29 @@ exports.RISK_LEVEL_MAP = {
     ADDRESS: 'Low Risk',
     FILE_PATH: 'Low Risk',
 };
+/**
+ * Icon identifier map for each PII type.
+ */
+const PII_ICON_MAP = {
+    EMAIL: '📧',
+    PHONE: '📱',
+    SSN: '🔒',
+    CREDIT_CARD: '💳',
+    ADDRESS: '🏠',
+    FILE_PATH: '📁',
+};
+/**
+ * Returns the risk level classification for a given PII type.
+ * Validates: Requirement 5.3
+ */
+function getRiskLevel(type) {
+    return exports.RISK_LEVEL_MAP[type];
+}
+/**
+ * Returns a type-appropriate icon identifier for a given PII type.
+ * Validates: Requirement 5.1
+ */
+function getPIIIcon(type) {
+    return PII_ICON_MAP[type];
+}
 //# sourceMappingURL=types.js.map

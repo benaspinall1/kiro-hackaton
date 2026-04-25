@@ -37,7 +37,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Tag: `Feature: chat-frontend-pii-panel, Property 1: Text Segmentation Preserves Original Text`
     - **Validates: Requirements 3.1, 3.3, 3.4**
 
-  - [~] 2.3 Implement selective redaction filtering logic
+  - [x] 2.3 Implement selective redaction filtering logic
     - Create `src/frontend/redaction-filter.ts`
     - Implement `filterEnabledEntities(items: PIIItemState[]): PIIEntity[]` — returns only entities where `redactionEnabled === true`, preserving order
     - Implement `autoRedactAll(items: PIIItemState[]): PIIItemState[]` — returns new array with all `redactionEnabled` set to `true`, entity references unchanged
