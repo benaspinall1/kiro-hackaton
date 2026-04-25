@@ -43,7 +43,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Implement `autoRedactAll(items: PIIItemState[]): PIIItemState[]` — returns new array with all `redactionEnabled` set to `true`, entity references unchanged
     - _Requirements: 6.1, 6.2, 6.3_
 
-  - [~] 2.4 Write property test for selective redaction filtering (Property 2)
+  - [x] 2.4 Write property test for selective redaction filtering (Property 2)
     - **Property 2: Selective Redaction Filtering**
     - Generate arrays of 1–20 PIIItemState objects with random `redactionEnabled` booleans
     - Verify filtered output contains exactly the entities where `redactionEnabled === true`, preserving order, and count matches
