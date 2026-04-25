@@ -165,7 +165,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random messages, process through pipeline, verify `messageHash` is valid SHA-256 hex, `detectedCounts` match actual counts, `actions` match actions taken, and `timestamp` is valid ISO 8601
     - **Validates: Requirements 6.1**
 
-  - [~] 8.4 Write unit tests for Chat_Proxy error handling
+  - [x] 8.4 Write unit tests for Chat_Proxy error handling
     - Test Ethics_Logic_Gate internal error → message blocked
     - Test downstream service unavailable → error response, no retry
     - Test no PII detected → report with zero counts and `'none'` action
