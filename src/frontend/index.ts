@@ -14,6 +14,7 @@ export {
   // Frontend types
   RiskLevel,
   ChatMessage,
+  ChatWindowState,
   PIIItemState,
   TextSegment,
   SessionStats,
@@ -35,3 +36,5 @@ export { renderPIIItemCard } from './components/pii-item-card';
 
 export { renderPrivacyLensPanel } from './components/privacy-lens-panel';
 export type { PrivacyLensPanelProps } from './components/privacy-lens-panel';
+
+export { renderChatWindow } from './components/chat-window';
