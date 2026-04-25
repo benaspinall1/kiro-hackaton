@@ -190,7 +190,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Test performance: PDF extractor processes 50 pages in < 3 seconds
     - _Requirements: 1.5, 5.2, 5.3, 5.4, 9.7, 9.8_
 
-- [~] 11. Final checkpoint - Ensure all tests pass
+- [x] 11. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
