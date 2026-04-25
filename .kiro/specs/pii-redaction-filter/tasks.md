@@ -150,7 +150,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - On any unhandled pipeline component failure, block the message (fail-safe) and return error
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [~] 8.2 Implement Redaction_Report generation
+  - [x] 8.2 Implement Redaction_Report generation
     - Generate SHA-256 hash of the original message (never store raw text)
     - Populate `detectedCounts` with per-type entity counts
     - Populate `actions` with the action taken for each entity
