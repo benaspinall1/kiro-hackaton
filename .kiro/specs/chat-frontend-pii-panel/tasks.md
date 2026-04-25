@@ -205,7 +205,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Test error responses return appropriate status codes
     - _Requirements: 9.1, 9.2, 9.3_
 
-- [~] 9. Final checkpoint
+- [x] 9. Final checkpoint
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
