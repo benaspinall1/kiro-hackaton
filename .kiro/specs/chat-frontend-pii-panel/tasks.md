@@ -103,7 +103,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Apply muted style to highlights for toggled-off entities
     - _Requirements: 1.1, 1.2, 1.4, 3.1, 3.2, 3.4, 6.4_
 
-  - [~] 5.2 Implement PIIItemCard component
+  - [x] 5.2 Implement PIIItemCard component
     - Create `src/frontend/components/pii-item-card.ts`
     - Display PII type icon using `getPIIIcon`
     - Display PII type label
