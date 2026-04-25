@@ -51,7 +51,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Tag: `Feature: chat-frontend-pii-panel, Property 2: Selective Redaction Filtering`
     - **Validates: Requirements 6.1, 6.2, 7.1**
 
-  - [~] 2.5 Write property test for auto-redact-all (Property 3)
+  - [x] 2.5 Write property test for auto-redact-all (Property 3)
     - **Property 3: Auto-Redact Enables All Toggles**
     - Generate arrays of 1–20 PIIItemState objects with random toggle states
     - Verify: all items have `redactionEnabled === true` after applying `autoRedactAll`, array length unchanged, entity references unchanged
