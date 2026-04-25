@@ -24,3 +24,5 @@ export {
   getRiskLevel,
   getPIIIcon,
 } from './types';
+
+export { segmentText } from './pii-highlighter';
