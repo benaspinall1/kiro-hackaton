@@ -113,7 +113,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Emit toggle event when switch is clicked
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-  - [~] 5.3 Implement PrivacyLensPanel component
+  - [x] 5.3 Implement PrivacyLensPanel component
     - Create `src/frontend/components/privacy-lens-panel.ts`
     - Slide-out panel from right side of Chat_UI
     - Display header with "{count} PII items detected" format
