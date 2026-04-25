@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { redact } from './redaction-engine';
-import { PIIEntity } from './types';
-import { InvalidEntityError } from './errors';
+import { redact } from '../src/redaction-engine';
+import { PIIEntity } from '../src/types';
+import { InvalidEntityError } from '../src/errors';
 
 describe('RedactionEngine', () => {
   it('should replace a single email entity with [EMAIL_REDACTED]', () => {

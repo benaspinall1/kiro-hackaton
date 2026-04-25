@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ChatProxyImpl, DownstreamService } from './chat-proxy';
-import { PrivacyRuleConfig } from './types';
+import { ChatProxyImpl, DownstreamService } from '../src/chat-proxy';
+import { PrivacyRuleConfig } from '../src/types';
 
 // Mock pdf-parse module (same pattern as pdf-text-extractor.test.ts)
 const mockGetText = vi.fn();
@@ -35,9 +35,9 @@ vi.mock('pdf-parse', () => {
 });
 
 // Import spyable modules
-import * as piiScanner from './pii-scanner';
-import * as redactionEngine from './redaction-engine';
-import * as ethicsLogicGate from './ethics-logic-gate';
+import * as piiScanner from '../src/pii-scanner';
+import * as redactionEngine from '../src/redaction-engine';
+import * as ethicsLogicGate from '../src/ethics-logic-gate';
 
 const redactAllRules: PrivacyRuleConfig = { rules: {} };
 
@@ -227,7 +227,7 @@ describe('Integration: Pipeline ordering and end-to-end', () => {
         pages: [],
       });
 
-      const extractor = new (await import('./pdf-text-extractor')).PDFTextExtractorImpl();
+      const extractor = new (await import('../src/pdf-text-extractor')).PDFTextExtractorImpl();
 
       const start = performance.now();
       const result = await extractor.extract(Buffer.from('fake-50-page-pdf'));

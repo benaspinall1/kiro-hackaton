@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { scan } from './pii-scanner';
+import { scan } from '../src/pii-scanner';
 
 describe('PII_Scanner', () => {
   describe('Email detection', () => {

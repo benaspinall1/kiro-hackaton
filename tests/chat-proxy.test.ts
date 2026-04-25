@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { describe, it, expect, vi } from 'vitest';
-import { ChatProxyImpl, DownstreamService } from './chat-proxy';
-import { PrivacyRuleConfig } from './types';
+import { ChatProxyImpl, DownstreamService } from '../src/chat-proxy';
+import { PrivacyRuleConfig } from '../src/types';
 
 function makeDownstream(reply: string = 'OK'): DownstreamService {
   return vi.fn(async () => reply);
@@ -119,7 +119,7 @@ describe('ChatProxyImpl', () => {
 
     // Force an unhandled error by passing entities with bad positions
     // We'll mock the scan function to throw
-    const originalScan = await import('./pii-scanner');
+    const originalScan = await import('../src/pii-scanner');
     const scanSpy = vi.spyOn(originalScan, 'scan').mockImplementation(() => {
       throw new Error('Unexpected scanner failure');
     });

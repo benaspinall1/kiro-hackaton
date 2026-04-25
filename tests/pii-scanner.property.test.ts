@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { scan } from './pii-scanner';
-import { redact } from './redaction-engine';
-import { PIIType, PIIEntity } from './types';
+import { scan } from '../src/pii-scanner';
+import { redact } from '../src/redaction-engine';
+import { PIIType, PIIEntity } from '../src/types';
 
 /**
  * Feature: pii-redaction-filter, Property 1: PII Detection Accuracy

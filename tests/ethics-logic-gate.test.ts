@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { evaluate, validateConfig } from './ethics-logic-gate';
-import { PIIEntity, PrivacyRuleConfig } from './types';
+import { evaluate, validateConfig } from '../src/ethics-logic-gate';
+import { PIIEntity, PrivacyRuleConfig } from '../src/types';
 
 describe('Ethics_Logic_Gate', () => {
   describe('evaluate', () => {

@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { createRedactionNotification, createBlockNotification } from './notification-service';
-import { scan } from './pii-scanner';
-import { redact } from './redaction-engine';
-import { PIIType, RedactionAction } from './types';
+import { createRedactionNotification, createBlockNotification } from '../src/notification-service';
+import { scan } from '../src/pii-scanner';
+import { redact } from '../src/redaction-engine';
+import { PIIType, RedactionAction } from '../src/types';
 
 /**
  * Feature: pii-redaction-filter, Property 8: Redaction Notification Correctness
