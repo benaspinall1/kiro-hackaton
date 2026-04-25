@@ -54,4 +54,14 @@ export declare const PII_COLOR_MAP: Record<PIIType, string>;
  * Validates: Requirement 5.3
  */
 export declare const RISK_LEVEL_MAP: Record<PIIType, RiskLevel>;
+/**
+ * Returns the risk level classification for a given PII type.
+ * Validates: Requirement 5.3
+ */
+export declare function getRiskLevel(type: PIIType): RiskLevel;
+/**
+ * Returns a type-appropriate icon identifier for a given PII type.
+ * Validates: Requirement 5.1
+ */
+export declare function getPIIIcon(type: PIIType): string;
 //# sourceMappingURL=types.d.ts.map
