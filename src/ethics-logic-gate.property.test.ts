@@ -209,3 +209,89 @@ describe('Feature: pii-redaction-filter, Property 7: Redact-Only Rules Allow Mes
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// Property 12: Privacy Rule Configuration Validation
+// ---------------------------------------------------------------------------
+
+import { validateConfig } from './ethics-logic-gate';
+
+/**
+ * Feature: pii-redaction-filter, Property 12: Privacy Rule Configuration Validation
+ *
+ * For any configuration object, the Ethics_Logic_Gate SHALL accept it if and only
+ * if all keys in the rules map are supported PII types (including FILE_PATH).
+ * Configurations referencing unsupported PII type strings SHALL be rejected.
+ *
+ * Validates: Requirements 7.1, 7.3
+ */
+
+const INVALID_PII_TYPES = ['PASSPORT', 'BIOMETRIC', 'DNA', 'FINGERPRINT', 'RETINA', 'BLOOD_TYPE'];
+
+describe('Feature: pii-redaction-filter, Property 12: Privacy Rule Configuration Validation', () => {
+  it('accepts configs with only valid PII type keys', () => {
+    fc.assert(
+      fc.property(
+        fc.shuffledSubarray(ALL_PII_TYPES, { minLength: 0 }).chain((types) =>
+          fc.record({
+            types: fc.constant(types),
+            actions: fc.array(fc.constantFrom('block' as const, 'redact' as const), {
+              minLength: types.length,
+              maxLength: types.length,
+            }),
+          })
+        ),
+        ({ types, actions }) => {
+          const rules: Record<string, 'block' | 'redact'> = {};
+          for (let i = 0; i < types.length; i++) {
+            rules[types[i]] = actions[i];
+          }
+          const config = { rules } as any;
+
+          // Should NOT throw for valid configs
+          expect(() => validateConfig(config)).not.toThrow();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  it('rejects configs with at least one invalid PII type key', () => {
+    fc.assert(
+      fc.property(
+        fc
+          .record({
+            validTypes: fc.shuffledSubarray(ALL_PII_TYPES, { minLength: 0 }),
+            invalidKeys: fc
+              .array(
+                fc.oneof(
+                  fc.constantFrom(...INVALID_PII_TYPES),
+                  fc.string({ minLength: 1, maxLength: 10 })
+                    .filter((s: string) => !(ALL_PII_TYPES as readonly string[]).includes(s))
+                ),
+                { minLength: 1, maxLength: 3 }
+              ),
+            actions: fc.array(fc.constantFrom('block' as const, 'redact' as const), {
+              minLength: 10,
+              maxLength: 10,
+            }),
+          }),
+        ({ validTypes, invalidKeys, actions }) => {
+          const rules: Record<string, 'block' | 'redact'> = {};
+          let actionIdx = 0;
+          for (const t of validTypes) {
+            rules[t] = actions[actionIdx++ % actions.length];
+          }
+          for (const k of invalidKeys) {
+            rules[k] = actions[actionIdx++ % actions.length];
+          }
+          const config = { rules } as any;
+
+          // Should throw for configs with invalid keys
+          expect(() => validateConfig(config)).toThrow();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});

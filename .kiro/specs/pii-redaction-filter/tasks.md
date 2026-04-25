@@ -93,7 +93,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Generate random PII entity lists + rule configs with all "redact" or empty config, verify gate returns `allowed: true`
     - **Validates: Requirements 3.4, 3.5, 7.2**
 
-  - [~] 4.4 Write property test: Privacy Rule Configuration Validation
+  - [x] 4.4 Write property test: Privacy Rule Configuration Validation
     - **Property 12: Privacy Rule Configuration Validation**
     - Generate configs with valid and invalid PII type keys, verify accept/reject behavior
     - **Validates: Requirements 7.1, 7.3**
