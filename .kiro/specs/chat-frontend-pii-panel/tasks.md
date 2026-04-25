@@ -29,7 +29,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Return a single unhighlighted segment when entity array is empty
     - _Requirements: 3.1, 3.3, 3.4_
 
-  - [~] 2.2 Write property test for text segmentation (Property 1)
+  - [x] 2.2 Write property test for text segmentation (Property 1)
     - **Property 1: Text Segmentation Preserves Original Text**
     - Generate random strings (1–500 chars) and random non-overlapping entity spans within them
     - Verify: (a) concatenating all segment `.text` values reproduces original text exactly, (b) highlighted segments match entity `matchedText`, (c) empty entity array produces single unhighlighted segment
