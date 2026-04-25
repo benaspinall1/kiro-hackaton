@@ -135,7 +135,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Handle Enter key and send button click to trigger message submission
     - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 2.5, 10.3_
 
-  - [~] 5.5 Write unit tests for UI components
+  - [x] 5.5 Write unit tests for UI components
     - Test MessageBubble renders user messages right-aligned, assistant left-aligned
     - Test MessageBubble applies distinct background colors per role
     - Test PII color map returns distinct colors for each PIIType
