@@ -197,7 +197,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Add error handling middleware returning appropriate HTTP status codes
     - _Requirements: 9.1, 9.2, 9.3_
 
-  - [~] 8.2 Write unit tests for API endpoints
+  - [x] 8.2 Write unit tests for API endpoints
     - Test `/api/scan` returns PIIEntity array for text with PII
     - Test `/api/scan` returns empty array for clean text
     - Test `/api/redact` returns RedactionResult with correct redacted text
