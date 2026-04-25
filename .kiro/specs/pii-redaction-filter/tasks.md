@@ -133,7 +133,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Wrap extraction in a 3-second timeout; throw `PDFTimeoutError` if exceeded
     - _Requirements: 9.1, 9.2, 9.3, 9.6, 9.7_
 
-  - [~] 7.2 Write unit tests for PDF_Text_Extractor
+  - [x] 7.2 Write unit tests for PDF_Text_Extractor
     - Test corrupted PDF → `PDFCorruptedError`
     - Test password-protected PDF → `PDFPasswordProtectedError`
     - Test image-only PDF → `extractable: false`, empty text
