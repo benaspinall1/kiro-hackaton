@@ -125,7 +125,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Display Stats_Footer with "{count} items protected today" format
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 6.3, 8.1_
 
-  - [~] 5.4 Implement ChatWindow component
+  - [x] 5.4 Implement ChatWindow component
     - Create `src/frontend/components/chat-window.ts`
     - Manage `ChatWindowState`: messages array, isLoading flag, inputText
     - Render Message_List with auto-scroll to most recent message

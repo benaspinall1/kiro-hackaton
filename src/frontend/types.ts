@@ -52,6 +52,15 @@ export interface TextSegment {
 }
 
 /**
+ * State for the ChatWindow component.
+ */
+export interface ChatWindowState {
+  messages: ChatMessage[];
+  isLoading: boolean;
+  inputText: string;
+}
+
+/**
  * Session statistics stored in sessionStorage.
  */
 export interface SessionStats {
