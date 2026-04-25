@@ -180,7 +180,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Ensure session stats reset on new session (sessionStorage behavior)
     - _Requirements: 4.1, 4.5, 4.6, 6.3, 8.1, 8.3_
 
-  - [~] 7.4 Write integration tests for message flow
+  - [x] 7.4 Write integration tests for message flow
     - Test full flow: compose → scan → highlight → toggle → redact → send → display reply
     - Test no-PII message sends directly without panel
     - Test error response displayed as error bubble
