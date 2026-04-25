@@ -180,7 +180,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
     - Ensure the full pipeline is functional: request → PDF extraction → scan → redact → gate → notify → respond
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 9.4, 9.5_
 
-  - [~] 10.2 Write integration tests
+  - [x] 10.2 Write integration tests
     - Test pipeline ordering: Scanner → Redaction_Engine → Ethics_Logic_Gate
     - Test PDF extraction runs before scanning when PDF is attached
     - Test blocked message does not contact downstream service
