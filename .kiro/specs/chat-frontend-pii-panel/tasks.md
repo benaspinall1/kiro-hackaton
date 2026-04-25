@@ -171,7 +171,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Message_Input remains fixed at bottom of viewport
     - _Requirements: 10.1, 10.2, 10.3_
 
-  - [~] 7.3 Wire all components together in main entry point
+  - [x] 7.3 Wire all components together in main entry point
     - Update `src/frontend/index.ts` to initialize ChatWindow, bind ChatController, mount to DOM
     - Connect PrivacyLensPanel toggle events to PIIItemState updates
     - Connect Auto_Redact_Button to `autoRedactAll`
