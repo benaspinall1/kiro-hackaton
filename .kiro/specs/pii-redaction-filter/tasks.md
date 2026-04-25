@@ -101,7 +101,7 @@ Implement a TypeScript/Node.js middleware pipeline that scans chat messages (tex
 - [x] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Implement Notification_Service
+- [x] 6. Implement Notification_Service
   - [x] 6.1 Implement the Notification_Service module
     - Create `src/notification-service.ts` implementing the `NotificationService` interface
     - `createRedactionNotification`: produce a notification of type `'redaction'` with per-type counts from the redaction actions list
