@@ -189,7 +189,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - _Requirements: 2.2, 7.1, 7.2, 7.3, 7.4, 7.5, 9.4, 9.5_
 
 - [ ] 8. Implement backend REST API endpoints
-  - [~] 8.1 Create Express/HTTP server with API routes
+  - [x] 8.1 Create Express/HTTP server with API routes
     - Create `src/frontend/server.ts` (or extend existing server if present)
     - Implement `POST /api/scan` — parse `{ text }` body, call `scan(text)`, return `PIIEntity[]` as JSON
     - Implement `POST /api/redact` — parse `{ text, entities }` body, call `redact(text, entities)`, return `RedactionResult` as JSON
