@@ -1,6 +1,35 @@
-# PII Redaction Filter
+# Privacy Lens
 
-A TypeScript/Node.js middleware that intercepts chat messages and scans them for Personally Identifiable Information (PII) before they reach a downstream chat service. Detected PII is redacted or blocked based on configurable privacy rules.
+Privacy Lens is a TypeScript middleware that sits between the user and any downstream AI chat service. Every message passes through a real-time pipeline before it ever leaves the browser.
+
+## Architecture
+
+The system is a synchronous pipeline orchestrated by a Chat Proxy:
+
+```
+Request → PDF Extraction (if attached) → PII Scan → Redaction → Ethics Logic Gate → Downstream Service
+```
+
+
+```mermaid
+flowchart TD
+    User[User / Client] -->|Chat Request| CP[Chat_Proxy]
+    CP --> PDF{Has PDF?}
+    PDF -->|Yes| PTE[PDF_Text_Extractor]
+    PTE --> PS[PII_Scanner]
+    PDF -->|No| PS
+    PS --> RE[Redaction_Engine]
+    RE --> ELG[Ethics_Logic_Gate]
+    ELG -->|Blocked| CP
+    ELG -->|Allowed| DS[Downstream Chat Service]
+    DS -->|Response| CP
+    CP -->|Response + Redaction_Report + Notification| User
+
+    subgraph Privacy Rules
+        PR[Privacy_Rule Configuration]
+    end
+    PR --> ELG
+```
 
 ## Supported PII Types
 
@@ -11,15 +40,9 @@ A TypeScript/Node.js middleware that intercepts chat messages and scans them for
 - Physical mailing addresses
 - File system paths — Unix absolute, home-relative (`~/`), Windows drive (`C:\`), and UNC (`\\server\share`)
 
-## Architecture
 
-The system is a synchronous pipeline orchestrated by a Chat Proxy:
 
-```
-Request → PDF Extraction (if attached) → PII Scan → Redaction → Ethics Logic Gate → Downstream Service
-```
-
-Components:
+## Components
 
 | Component | Responsibility |
 |---|---|
@@ -30,51 +53,3 @@ Components:
 | PDF_Text_Extractor | Extracts text from PDF attachments (via `pdf-parse`) |
 | Chat_Proxy | Orchestrates the pipeline and generates audit reports |
 
-## Getting Started
-
-```bash
-npm install
-npm run build
-```
-
-## Running Tests
-
-```bash
-npm test
-```
-
-Tests use [Vitest](https://vitest.dev/) with [fast-check](https://github.com/dubzzz/fast-check) for property-based testing.
-
-## Usage
-
-```typescript
-import { createChatProxy, PrivacyRuleConfig } from './src';
-
-const rules: PrivacyRuleConfig = {
-  rules: { SSN: 'block', CREDIT_CARD: 'block', EMAIL: 'redact' },
-};
-
-const proxy = createChatProxy(async (message) => {
-  // Forward to your downstream chat service
-  return 'response from service';
-});
-
-const result = await proxy.processRequest({ prompt: 'Hello' }, rules);
-```
-
-## Privacy Rule Configuration
-
-Map each PII type to `"block"` or `"redact"`. Types not listed default to `"redact"`.
-
-```typescript
-const rules: PrivacyRuleConfig = {
-  rules: {
-    SSN: 'block',
-    CREDIT_CARD: 'block',
-    EMAIL: 'redact',
-    FILE_PATH: 'redact',
-  },
-};
-```
-
-When a blocked PII type is detected, the entire message is rejected and never forwarded downstream.

@@ -18,7 +18,7 @@ James is writing a research paper and pastes a block of notes into a chat for he
 
 **[THE PRODUCT — How It Works]**
 
-PII Redaction Filter is a TypeScript middleware that sits between the user and any downstream AI chat service. Every message passes through a real-time pipeline before it ever leaves the browser.
+Privacy Lens is a TypeScript middleware that sits between the user and any downstream AI chat service. Every message passes through a real-time pipeline before it ever leaves the browser.
 
 First, we scan the text using pattern-matching for six PII types: emails, phone numbers, Social Security Numbers, credit cards, physical addresses, and file paths. If a PDF is attached, we extract and scan that too.
 
