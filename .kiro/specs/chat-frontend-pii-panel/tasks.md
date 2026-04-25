@@ -164,7 +164,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Handle `blocked: true` response: display block notification
     - _Requirements: 2.2, 2.3, 6.1, 6.2, 7.1, 7.2, 7.3, 7.4, 7.5, 8.2, 9.4, 9.5_
 
-  - [~] 7.2 Implement responsive layout
+  - [x] 7.2 Implement responsive layout
     - Add responsive CSS/layout logic to ChatWindow and PrivacyLensPanel
     - At viewport ≥1024px: display Message_List and PrivacyLensPanel side by side
     - At viewport <1024px: PrivacyLensPanel overlays as full-width modal

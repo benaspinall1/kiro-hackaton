@@ -41,3 +41,5 @@ export { renderChatWindow } from './components/chat-window';
 
 export { ChatController } from './chat-controller';
 export type { ChatControllerDeps, ChatControllerCallbacks } from './chat-controller';
+
+export { getResponsiveStyles, renderAppLayout } from './styles';
