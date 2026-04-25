@@ -59,7 +59,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Tag: `Feature: chat-frontend-pii-panel, Property 3: Auto-Redact Enables All Toggles`
     - **Validates: Requirements 6.3**
 
-  - [~] 2.6 Implement session stats accumulation logic
+  - [x] 2.6 Implement session stats accumulation logic
     - Create `src/frontend/session-stats.ts`
     - Implement `getSessionStats(): SessionStats` — reads from `sessionStorage`, returns `{ itemsProtected: 0 }` if not found
     - Implement `incrementSessionStats(count: number): SessionStats` — adds count to current value, writes back to `sessionStorage`, returns updated stats
