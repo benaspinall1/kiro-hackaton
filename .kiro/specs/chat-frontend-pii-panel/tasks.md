@@ -86,7 +86,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Throw typed errors on non-200 responses for UI error handling
     - _Requirements: 9.1, 9.2, 9.3_
 
-  - [~] 4.2 Write unit tests for API service
+  - [x] 4.2 Write unit tests for API service
     - Test `scanForPII` returns `PIIEntity[]` on success and throws on non-200
     - Test `redactText` returns `RedactionResult` on success and throws on non-200
     - Test `sendMessage` returns `ChatResponse` on success and throws on non-200
