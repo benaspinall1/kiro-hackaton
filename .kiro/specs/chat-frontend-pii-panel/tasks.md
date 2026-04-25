@@ -74,7 +74,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Tag: `Feature: chat-frontend-pii-panel, Property 4: Session Stats Accumulation`
     - **Validates: Requirements 8.1, 8.2, 8.3**
 
-- [~] 3. Checkpoint
+- [x] 3. Checkpoint
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Implement API service layer

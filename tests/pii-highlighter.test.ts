@@ -12,8 +12,8 @@ describe('segmentText', () => {
     const entity: PIIEntity = {
       type: 'EMAIL',
       matchedText: 'test@example.com',
-      startIndex: 10,
-      endIndex: 26,
+      startIndex: 9,
+      endIndex: 25,
     };
     const text = 'Contact: test@example.com please';
     const result = segmentText(text, [entity]);
