@@ -78,7 +78,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Implement API service layer
-  - [~] 4.1 Create API service module
+  - [x] 4.1 Create API service module
     - Create `src/frontend/api-service.ts`
     - Implement `scanForPII(text: string): Promise<PIIEntity[]>` — POST to `/api/scan` with `{ text }`, return parsed `PIIEntity[]`
     - Implement `redactText(text: string, entities: PIIEntity[]): Promise<RedactionResult>` — POST to `/api/redact` with `{ text, entities }`, return parsed `RedactionResult`
