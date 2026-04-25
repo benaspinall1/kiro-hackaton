@@ -38,3 +38,6 @@ export { renderPrivacyLensPanel } from './components/privacy-lens-panel';
 export type { PrivacyLensPanelProps } from './components/privacy-lens-panel';
 
 export { renderChatWindow } from './components/chat-window';
+
+export { ChatController } from './chat-controller';
+export type { ChatControllerDeps, ChatControllerCallbacks } from './chat-controller';
