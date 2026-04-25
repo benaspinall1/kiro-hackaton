@@ -84,3 +84,31 @@ export const RISK_LEVEL_MAP: Record<PIIType, RiskLevel> = {
   ADDRESS: 'Low Risk',
   FILE_PATH: 'Low Risk',
 };
+
+/**
+ * Icon identifier map for each PII type.
+ */
+const PII_ICON_MAP: Record<PIIType, string> = {
+  EMAIL: '📧',
+  PHONE: '📱',
+  SSN: '🔒',
+  CREDIT_CARD: '💳',
+  ADDRESS: '🏠',
+  FILE_PATH: '📁',
+};
+
+/**
+ * Returns the risk level classification for a given PII type.
+ * Validates: Requirement 5.3
+ */
+export function getRiskLevel(type: PIIType): RiskLevel {
+  return RISK_LEVEL_MAP[type];
+}
+
+/**
+ * Returns a type-appropriate icon identifier for a given PII type.
+ * Validates: Requirement 5.1
+ */
+export function getPIIIcon(type: PIIType): string {
+  return PII_ICON_MAP[type];
+}

@@ -15,7 +15,7 @@ Build a TypeScript web-based chat frontend with inline PII highlighting and a Pr
     - Define `RISK_LEVEL_MAP` constant mapping each `PIIType` to its `RiskLevel`
     - _Requirements: 3.2, 5.3_
 
-  - [~] 1.2 Implement risk level and icon utility functions
+  - [x] 1.2 Implement risk level and icon utility functions
     - Implement `getRiskLevel(type: PIIType): RiskLevel` using `RISK_LEVEL_MAP`
     - Implement `getPIIIcon(type: PIIType): string` returning a type-appropriate icon identifier
     - _Requirements: 5.1, 5.3_
